@@ -1,0 +1,3 @@
+const getProductsByCategory = () => {};
+
+export { getProductsByCategory };
