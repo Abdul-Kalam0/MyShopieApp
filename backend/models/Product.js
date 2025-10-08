@@ -38,8 +38,13 @@ const productSchema = new mongoose.Schema(
       default: [],
     },
     category: {
-      type: String,
-      default: "Apparel",
+      type: mongoose.Schema.Types.ObjectId, // store reference ID
+      ref: "Category", // reference the Category model
+      required: true, // every product must have a category
+    },
+    categoryType: {
+      type: String, // store the type of the category
+      required: true, // optional, depends on your app logic
     },
     brand: {
       type: String,
@@ -73,6 +78,14 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Product = mongoose.model("Product", productSchema);
+// Pre-save hook to calculate discountPercent
+productSchema.pre("save", function (next) {
+  if (this.originalPrice && this.price) {
+    this.discountPercent = Math.round(
+      ((this.originalPrice - this.price) / this.originalPrice) * 100
+    );
+  }
+  next();
+});
 
-export default Product;
+export default mongoose.model("Product", productSchema);

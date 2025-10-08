@@ -1,5 +1,3 @@
-import { productValidationSchema } from "../validations/productValidation";
-
 const productValidation = (schema) => (req, res, next) => {
   const { error, value } = schema(req.body, { aboutEarly: false });
   if (error) {

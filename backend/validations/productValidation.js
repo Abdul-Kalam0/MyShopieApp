@@ -11,13 +11,17 @@ export const productValidationSchema = Joi.object({
   numReviews: Joi.number().min(0).optional(),
   sizes: Joi.array()
     .items(Joi.string().valid("S", "M", "L", "XL", "XXL"))
-    .required(),
-  category: Joi.string().required(),
-  brand: Joi.string().optional(),
-  stock: Joi.number().min(0).default(0),
+    .optional(), // now optional
+  category: Joi.string().required(), // category name from frontend
+  categoryType: Joi.string().required(), // new field, must be provided
+  brand: Joi.string().optional().default("Unknown"),
+  stock: Joi.number().min(0).default(10),
   imageUrl: Joi.string().uri().required(),
-  isFeatured: Joi.boolean().optional(),
-  returnPolicy: Joi.string().optional(),
-  deliveryType: Joi.string().optional(),
-  paymentOptions: Joi.array().items(Joi.string()).optional(),
+  isFeatured: Joi.boolean().optional().default(false),
+  returnPolicy: Joi.string().optional().default("10 days Returnable"),
+  deliveryType: Joi.string().optional().default("Free Delivery"),
+  paymentOptions: Joi.array()
+    .items(Joi.string())
+    .optional()
+    .default(["Cash on Delivery", "Secure Payment"]),
 });
