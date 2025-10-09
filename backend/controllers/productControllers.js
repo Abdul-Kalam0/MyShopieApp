@@ -6,6 +6,7 @@ const createProduct = async (req, res) => {
   try {
     //find the category data from the category to get category Id
     const category = await Category.findOne({ name: categoryName });
+    //if no category present create one
     if (!category) {
       category = new Category.create({
         name: categoryName,
@@ -25,13 +26,11 @@ const createProduct = async (req, res) => {
     const populatedProduct = await Product.findById(product._id).populate(
       "category"
     );
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: "Product Created",
-        data: populatedProduct,
-      });
+    res.status(201).json({
+      success: true,
+      message: "Product Created",
+      data: populatedProduct,
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server error" });
   }
