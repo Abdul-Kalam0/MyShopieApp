@@ -1,31 +1,50 @@
-import Category from "../models/Category";
-import Product from "../models/Product";
+import Category from "../models/Category.js";
+import Product from "../models/Product.js";
 
 const createProduct = async (req, res) => {
-  const { category: categoryName, categoryType, ...productData } = req.body;
+  const {
+    category: categoryName,
+    description,
+    categoryType,
+    ...productData
+  } = req.body;
+
   try {
-    //find the category data from the category to get category Id
-    const category = await Category.findOne({ name: categoryName });
-    //if no category present create one
+    // Find category by name
+    let category = await Category.findOne({ name: categoryName });
+
+    // If category does not exist, create it
     if (!category) {
-      category = new Category.create({
+      category = await Category.create({
         name: categoryName,
         type: categoryType,
       });
     }
 
+    //check if product already exist
+    const existingProduct = await Product.findOne({ description });
+    if (existingProduct.stock > 0)
+      return res.status(409).json({
+        success: false,
+        message: "Product already exist",
+        data: { existingProduct },
+      });
+
+    // Create product with category ID
     const product = new Product({
       ...productData,
-      category: categoryName._id,
+      category: category._id, // ✅ assign category ObjectId
       categoryType,
+      description,
     });
 
     await product.save();
 
-    // 3️⃣ Populate category for response
+    // Populate category in response
     const populatedProduct = await Product.findById(product._id).populate(
       "category"
     );
+
     res.status(201).json({
       success: true,
       message: "Product Created",

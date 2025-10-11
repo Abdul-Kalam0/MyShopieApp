@@ -7,6 +7,6 @@ import {
 } from "../controllers/categoryControllers.js";
 
 router.get("/", getAllCategories);
-router.get("/categoryId", getCategoryByCategoryId);
+router.get("/:categoryId", getCategoryByCategoryId);
 
 export default router;

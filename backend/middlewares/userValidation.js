@@ -1,4 +1,4 @@
-const productValidation = (schema) => (req, res, next) => {
+const userValidation = (schema) => (req, res, next) => {
   const { error, value } = schema.validate(req.body, { abortEarly: false });
   if (error) {
     return res.status(400).json({
@@ -11,4 +11,4 @@ const productValidation = (schema) => (req, res, next) => {
   next();
 };
 
-export default productValidation;
+export default userValidation;
