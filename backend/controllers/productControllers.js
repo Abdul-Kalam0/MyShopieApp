@@ -23,7 +23,7 @@ const createProduct = async (req, res) => {
 
     //check if product already exist
     const existingProduct = await Product.findOne({ description });
-    if (existingProduct.stock > 0)
+    if (existingProduct && existingProduct.stock > 0)
       return res.status(409).json({
         success: false,
         message: "Product already exist",
@@ -51,7 +51,9 @@ const createProduct = async (req, res) => {
       data: populatedProduct,
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server error" });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error", error: error.message });
   }
 };
 
