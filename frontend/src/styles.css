@@ -1,0 +1,12 @@
+
+:root { --light: #f6f7f8; --muted:#6c757d; }
+body { background: #f4f5f7; }
+.container-narrow { max-width: 1200px; }
+.card-hover:hover { box-shadow: 0 10px 25px rgba(0,0,0,.08); transform: translateY(-2px); transition: .2s; }
+.category-tile { height: 90px; border-radius: 10px; background:#e9ecef; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+.category-tile .label { position:absolute; bottom:8px; left:10px; background:rgba(0,0,0,.65); color:#fff; padding:2px 8px; border-radius: 6px; font-size: .85rem; }
+.product-img { height: 180px; object-fit: cover; }
+.badge-discount { position:absolute; top:10px; left:10px; }
+.header-brand { font-weight: 700; letter-spacing: .3px; }
+.filters-col { min-width: 250px; }
+.sticky-header { position: sticky; top: 0; z-index: 1030; background: #fff; }

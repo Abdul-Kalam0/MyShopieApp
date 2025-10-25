@@ -1,19 +1,15 @@
 import Category from "../models/Category.js";
 import Product from "../models/Product.js";
 
-const createProduct = async (req, res) => {
+export const createProduct = async (req, res) => {
   const {
     category: categoryName,
     description,
     categoryType,
     ...productData
   } = req.body;
-
   try {
-    // Find category by name
     let category = await Category.findOne({ name: categoryName });
-
-    // If category does not exist, create it
     if (!category) {
       category = await Category.create({
         name: categoryName,
@@ -21,8 +17,7 @@ const createProduct = async (req, res) => {
       });
     }
 
-    //check if product already exist
-    const existingProduct = await Product.findOne({ description });
+    const existingProduct = await Product.findOne({ name: productData.name });
     if (existingProduct && existingProduct.stock > 0)
       return res.status(409).json({
         success: false,
@@ -30,21 +25,17 @@ const createProduct = async (req, res) => {
         data: { existingProduct },
       });
 
-    // Create product with category ID
     const product = new Product({
       ...productData,
-      category: category._id, // ✅ assign category ObjectId
+      category: category._id,
       categoryType,
       description,
     });
-
     await product.save();
 
-    // Populate category in response
     const populatedProduct = await Product.findById(product._id).populate(
       "category"
     );
-
     res.status(201).json({
       success: true,
       message: "Product Created",
@@ -57,9 +48,27 @@ const createProduct = async (req, res) => {
   }
 };
 
-const getAllProducts = async (req, res) => {
+export const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate("category");
+    const { q, category, sort } = req.query;
+    const filter = {};
+
+    // ✅ Search by name (q=)
+    if (q) filter.name = { $regex: q, $options: "i" };
+
+    // ✅ Filter by categoryType (T-Shirts, Jeans, Hoodies, etc.)
+    if (category) {
+      filter.categoryType = category;
+    }
+
+    let query = Product.find(filter).populate("category");
+
+    // ✅ Price sorting
+    if (sort === "asc") query = query.sort({ price: 1 });
+    if (sort === "desc") query = query.sort({ price: -1 });
+
+    const products = await query.exec();
+
     res.status(200).json({
       success: true,
       message: "Products data fetched successfully",
@@ -70,15 +79,14 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-const getProductByProductId = async (req, res) => {
+export const getProductByProductId = async (req, res) => {
   try {
     const { productId } = req.params;
     const product = await Product.findById(productId).populate("category");
-    if (!product) {
+    if (!product)
       return res
         .status(404)
         .json({ success: false, message: "Data does not exist" });
-    }
     res.status(200).json({
       success: true,
       message: "Product fetch successfully",
@@ -88,5 +96,3 @@ const getProductByProductId = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
-
-export { createProduct, getAllProducts, getProductByProductId };

@@ -1,31 +1,40 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 dotenv.config();
-import productRoutes from "./routers/productRoutes.js";
-import categoryRoutes from "./routers/categoryRoutes.js";
-import userRoutes from "./routers/userRoutes.js";
+
+import productRoutes from "./routes/productRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import cartRoutes from "./routes/cartRoutes.js";
+import wishlistRoutes from "./routes/wishlistRoutes.js";
+import addressRoutes from "./routes/addressRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 const app = express();
 
-// Allow requests from React app
+app.use(express.json());
+app.use(cookieParser());
+
 app.use(
   cors({
-    origin: "http://localhost:5173", // ✅ your frontend URL
+    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true, // optional, if you use cookies/auth
+    credentials: true,
   })
 );
 
-app.use(express.json());
-
-//Auth
+// Routes
 app.use("/api/users", userRoutes);
-
-//PRODUCT ROUTES
 app.use("/api/products", productRoutes);
-
-//CATEGORY ROUTES
 app.use("/api/categories", categoryRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/wishlist", wishlistRoutes);
+app.use("/api/addresses", addressRoutes);
+app.use("/api/orders", orderRoutes);
+
+// health
+app.get("/", (req, res) => res.json({ success: true, message: "API running" }));
 
 export default app;
