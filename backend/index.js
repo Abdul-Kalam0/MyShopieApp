@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+    origin: "https://my-shopie-app-5ls3.vercel.app", // ✅ YOUR FRONTEND LIVE URL
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
