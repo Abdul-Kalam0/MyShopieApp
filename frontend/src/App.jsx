@@ -1,3 +1,4 @@
+// src/App.jsx
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Home from "./pages/Home.jsx";
@@ -12,6 +13,7 @@ import useToast from "./hooks/useToast.js";
 import Toast from "./components/Toast.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 export default function App() {
   const { toast, show, hide } = useToast();
@@ -25,11 +27,46 @@ export default function App() {
           path="/product/:id"
           element={<ProductDetails showToast={show} />}
         />
-        <Route path="/wishlist" element={<Wishlist showToast={show} />} />
-        <Route path="/cart" element={<Cart showToast={show} />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/checkout" element={<Checkout showToast={show} />} />
-        <Route path="/orders" element={<Orders />} />
+        <Route
+          path="/wishlist"
+          element={
+            <ProtectedRoute>
+              <Wishlist showToast={show} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoute>
+              <Cart showToast={show} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            <ProtectedRoute>
+              <Checkout showToast={show} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute>
+              <Orders />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/login" element={<Login showToast={show} />} />
         <Route path="/register" element={<Register showToast={show} />} />
       </Routes>

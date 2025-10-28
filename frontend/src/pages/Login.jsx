@@ -1,28 +1,27 @@
+// src/pages/Login.jsx
 import { useState } from "react";
-import { post } from "../services/api";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function Login({ showToast }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
+
   const [mobileNumber, setMobileNumber] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (!mobileNumber || !password) {
+    if (!mobileNumber || !password)
       return showToast("danger", "All fields are required");
-    }
     try {
       setLoading(true);
-      const res = await post("/api/users/login", { mobileNumber, password });
-
-      // ✅ Save token + user in localStorage
-      localStorage.setItem("token", res?.data?.token); // assuming backend sends token properly
-      localStorage.setItem("user", JSON.stringify(res?.data?.data));
-
+      await login({ mobileNumber, password });
       showToast("success", "Login Successful!");
-      navigate("/"); // ✅ redirect to Home
+      const to = location.state?.from?.pathname || "/";
+      navigate(to, { replace: true });
     } catch (err) {
       showToast("danger", err?.response?.data?.message || "Login failed");
     } finally {
@@ -58,7 +57,6 @@ export default function Login({ showToast }) {
           {loading ? "Logging in..." : "Login"}
         </button>
       </form>
-
       <p className="text-center mt-3">
         Don't have an account? <Link to="/register">Register</Link>
       </p>

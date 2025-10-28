@@ -19,9 +19,9 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "https://my-shopie-app-5ls3.vercel.app", // ✅ YOUR FRONTEND LIVE URL
+    origin: "https://my-shopie-app-5ls3.vercel.app", // your exact frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
+    credentials: true, // OK to keep true
   })
 );
 

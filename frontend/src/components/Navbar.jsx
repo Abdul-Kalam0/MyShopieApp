@@ -1,44 +1,19 @@
+// src/components/Navbar.jsx
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { get, post } from "../services/api";
+import { useAuth } from "../context/AuthContext";
+import { get } from "../services/api";
 
 export default function Navbar({ onSearch }) {
   const [q, setQ] = useState("");
-  const [user, setUser] = useState(null);
-  const [cartCount, setCartCount] = useState(0);
-  const [wishCount, setWishCount] = useState(0);
-
+  const { user, cartCount, wishCount, logout, refreshCounts } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
-  // ✅ function to fetch counts manually when triggered
-  const fetchCounts = () => {
-    get("/api/cart").then((res) => setCartCount(res.data?.items?.length || 0));
-    get("/api/wishlist").then((res) =>
-      setWishCount(res.data?.products?.length || 0)
-    );
-  };
-
   useEffect(() => {
-    // Check login + initial counts on load & page change
-    get("/api/users/me")
-      .then((res) => setUser(res.user))
-      .catch(() => setUser(null));
-    fetchCounts();
-
-    // ✅ Listen for "cart-updated" event and refresh count
-    window.addEventListener("cart-updated", fetchCounts);
-
-    return () => {
-      window.removeEventListener("cart-updated", fetchCounts);
-    };
-  }, [location.pathname]);
-
-  const handleLogout = async () => {
-    await post("/api/users/logout");
-    setUser(null);
-    navigate("/", { replace: true });
-  };
+    // keep counts refreshed on route changes
+    refreshCounts();
+  }, [location.pathname, refreshCounts]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -85,7 +60,7 @@ export default function Navbar({ onSearch }) {
           ) : (
             <>
               <span className="fw-semibold">Hi, {user.name}</span>
-              <button className="btn btn-danger btn-sm" onClick={handleLogout}>
+              <button className="btn btn-danger btn-sm" onClick={logout}>
                 Logout
               </button>
             </>
