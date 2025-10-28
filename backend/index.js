@@ -20,12 +20,13 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "https://my-shopie-app-5ls3.vercel.app",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // ✅ ADD THIS
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // ✅ OPTIONS included
+    allowedHeaders: ["Content-Type", "Authorization"], // ✅ important
     credentials: true,
   })
 );
 
-// ✅ VERY IMPORTANT: also allow OPTIONS explicitly
+// ✅ VERY IMPORTANT — allow the OPTIONS preflight to return 200 OK
 app.options("*", cors());
 
 // Routes
