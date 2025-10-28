@@ -15,11 +15,12 @@ export default function Login({ showToast }) {
     }
     try {
       setLoading(true);
-      await post(
-        "/api/users/login",
-        { mobileNumber, password },
-        { withCredentials: true }
-      );
+      const res = await post("/api/users/login", { mobileNumber, password });
+
+      // ✅ Save token + user in localStorage
+      localStorage.setItem("token", res?.data?.token); // assuming backend sends token properly
+      localStorage.setItem("user", JSON.stringify(res?.data?.data));
+
       showToast("success", "Login Successful!");
       navigate("/"); // ✅ redirect to Home
     } catch (err) {
