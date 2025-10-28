@@ -1,11 +1,18 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://my-shopie-app.vercel.app", // ✅ LIVE BACKEND URL
-  withCredentials: true,
+  baseURL: "https://my-shopie-app.vercel.app", // ✅ your live backend
 });
 
-// Helper wrappers
+// ✅ ALWAYS attach token to every request if available
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 export const get = (url, config) => api.get(url, config).then((r) => r.data);
 export const post = (url, data, config) =>
   api.post(url, data, config).then((r) => r.data);
