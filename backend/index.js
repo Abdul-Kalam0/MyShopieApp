@@ -17,19 +17,35 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
+/**
+ * ✅ CRITICAL — Manually handle OPTIONS preflight FIRST
+ */
+app.use((req, res, next) => {
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://my-shopie-app-5ls3.vercel.app"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header("Access-Control-Allow-Credentials", "true");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end(); // ✅ Return OK immediately
+  }
+  next();
+});
+
+/**
+ * ✅ Standard cors() follows AFTER manual preflight handler
+ */
 app.use(
   cors({
     origin: "https://my-shopie-app-5ls3.vercel.app",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // ✅ OPTIONS included
-    allowedHeaders: ["Content-Type", "Authorization"], // ✅ important
-    credentials: true,
+    credentials: true, // ✅ allow cookies/JWT
   })
 );
 
-// ✅ VERY IMPORTANT — allow the OPTIONS preflight to return 200 OK
-app.options("*", cors());
-
-// Routes
+// ✅ ROUTES
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
@@ -38,7 +54,7 @@ app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/addresses", addressRoutes);
 app.use("/api/orders", orderRoutes);
 
-// health
+// ✅ Health check
 app.get("/", (req, res) => res.json({ success: true, message: "API running" }));
 
 export default app;
