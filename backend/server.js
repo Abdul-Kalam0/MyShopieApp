@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 const startServer = async () => {
   await dbInitialization();
   server.listen(PORT, () => {
-    console.log(`Sever listening on PORT ${PORT}`);
+    console.log(`Server listening on PORT ${PORT}`);
   });
 };
 
