@@ -48,47 +48,6 @@ export const createProduct = async (req, res) => {
   }
 };
 
-// export const getAllProducts = async (req, res) => {
-//   try {
-//     const { q, category, sort } = req.query;
-//     const filter = {};
-
-//     // ✅ Search by name (q=)
-//     if (q) filter.name = { $regex: q, $options: "i" };
-
-//     // ✅ Filter by categoryType (T-Shirts, Jeans, Hoodies, etc.)
-//     if (category) {
-//       filter.categoryType = category;
-//     }
-
-//     // ✅ Filter by max price (NEW: Fixes the slider)
-//     if (req.query.maxPrice) {
-//       filter.price = { $lte: Number(req.query.maxPrice) };
-//     }
-
-//     // ✅ Filter by min rating (NEW: For completeness)
-//     if (req.query.minRating) {
-//       filter.rating = { $gte: Number(req.query.minRating) };
-//     }
-
-//     let query = Product.find(filter).populate("category");
-
-//     // ✅ Price sorting
-//     if (sort === "asc") query = query.sort({ price: 1 });
-//     if (sort === "desc") query = query.sort({ price: -1 });
-
-//     const products = await query.exec();
-
-//     res.status(200).json({
-//       success: true,
-//       message: "Products data fetched successfully",
-//       data: { products },
-//     });
-//   } catch (error) {
-//     res.status(500).json({ success: false, message: "Server error" });
-//   }
-// };
-
 export const getAllProducts = async (req, res) => {
   try {
     const { q, category, sort, minPrice, maxPrice, minRating } = req.query;
@@ -107,12 +66,25 @@ export const getAllProducts = async (req, res) => {
       filter.price = {};
       if (minPrice) filter.price.$gte = Number(minPrice);
       if (maxPrice) filter.price.$lte = Number(maxPrice);
+      // Exclude null prices to avoid issues
+      filter.price.$ne = null;
     }
 
     // ✅ Filter by min rating
     if (minRating) {
       filter.rating = { $gte: Number(minRating) };
     }
+
+    // 🐛 DEBUG: Log the filter and query params
+    console.log("Query Params:", {
+      q,
+      category,
+      sort,
+      minPrice,
+      maxPrice,
+      minRating,
+    });
+    console.log("Applied Filter:", filter);
 
     let query = Product.find(filter).populate("category");
 
@@ -122,12 +94,16 @@ export const getAllProducts = async (req, res) => {
 
     const products = await query.exec();
 
+    // 🐛 DEBUG: Log the number of products returned
+    console.log(`Found ${products.length} products`);
+
     res.status(200).json({
       success: true,
       message: "Products data fetched successfully",
       data: { products },
     });
   } catch (error) {
+    console.error("Error in getAllProducts:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
