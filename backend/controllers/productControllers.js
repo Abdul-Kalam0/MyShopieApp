@@ -48,6 +48,37 @@ export const createProduct = async (req, res) => {
   }
 };
 
+// export const getAllProducts = async (req, res) => {
+//   try {
+//     const { q, category, sort } = req.query;
+//     const filter = {};
+
+//     // ✅ Search by name (q=)
+//     if (q) filter.name = { $regex: q, $options: "i" };
+
+//     // ✅ Filter by categoryType (T-Shirts, Jeans, Hoodies, etc.)
+//     if (category) {
+//       filter.categoryType = category;
+//     }
+
+//     let query = Product.find(filter).populate("category");
+
+//     // ✅ Price sorting
+//     if (sort === "asc") query = query.sort({ price: 1 });
+//     if (sort === "desc") query = query.sort({ price: -1 });
+
+//     const products = await query.exec();
+
+//     res.status(200).json({
+//       success: true,
+//       message: "Products data fetched successfully",
+//       data: { products },
+//     });
+//   } catch (error) {
+//     res.status(500).json({ success: false, message: "Server error" });
+//   }
+// };
+
 export const getAllProducts = async (req, res) => {
   try {
     const { q, category, sort } = req.query;
@@ -59,6 +90,16 @@ export const getAllProducts = async (req, res) => {
     // ✅ Filter by categoryType (T-Shirts, Jeans, Hoodies, etc.)
     if (category) {
       filter.categoryType = category;
+    }
+
+    // ✅ Filter by max price (NEW: Fixes the slider)
+    if (req.query.maxPrice) {
+      filter.price = { $lte: Number(req.query.maxPrice) };
+    }
+
+    // ✅ Filter by min rating (NEW: For completeness)
+    if (req.query.minRating) {
+      filter.rating = { $gte: Number(req.query.minRating) };
     }
 
     let query = Product.find(filter).populate("category");
