@@ -1,11 +1,11 @@
-// FILE: client/src/pages/Home.jsx
+// src/pages/Home.jsx
 
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const navigate = useNavigate();
 
-  // STATIC 5 CATEGORY TILES
+  // STATIC 5 CATEGORY TILES (with varied hover or implied text via images)
   const categories = [
     {
       name: "Shirts",
@@ -81,51 +81,74 @@ export default function Home() {
         }}
       >
         <div className="bg-dark bg-opacity-50 rounded p-4 text-center">
-          <h2 className="fw-bold mb-2">New Season</h2>
+          <h2 className="fw-bold mb-2">Fresh Arrivals Await</h2>
           <p className="mb-0">
-            Discover the latest trends in fashion & lifestyle
+            Explore cutting-edge styles and timeless essentials for every
+            occasion.
           </p>
         </div>
       </div>
 
       {/* --- FEATURE / PROMO SECTIONS --- */}
       <div className="row g-4">
-        {[1, 2].map((_, i) => (
-          <div key={i} className="col-md-6">
-            <div className="card h-100 border-0 shadow-sm p-3 d-flex flex-row align-items-center bg-light">
-              <div
-                className="rounded me-3"
-                style={{
-                  width: "120px",
-                  height: "120px",
-                  overflow: "hidden",
-                  flexShrink: 0,
-                }}
-              >
-                <img
-                  src={
-                    i === 0
-                      ? "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=300&q=80"
-                      : "https://images.unsplash.com/photo-1521334884684-d80222895322?w=300&q=80"
-                  }
-                  alt="collection"
-                  className="w-100 h-100"
-                  style={{ objectFit: "cover" }}
-                />
-              </div>
-              <div>
-                <small className="text-uppercase text-muted">
-                  New Arrivals
-                </small>
-                <h5 className="fw-bold mt-2 mb-2">Summer Collection</h5>
-                <p className="text-muted mb-0">
-                  Check out our best winter collection to stay warm in style
-                  this season.
-                </p>
-              </div>
+        <div className="col-md-6">
+          <div className="card h-100 border-0 shadow-sm p-3 d-flex flex-row align-items-center bg-light">
+            <div
+              className="rounded me-3"
+              style={{
+                width: "120px",
+                height: "120px",
+                overflow: "hidden",
+                flexShrink: 0,
+              }}
+            >
+              <img
+                src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=300&q=80"
+                alt="collection"
+                className="w-100 h-100"
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+            <div>
+              <small className="text-uppercase text-muted">
+                Exclusive Drops
+              </small>
+              <h5 className="fw-bold mt-2 mb-2">Winter Essentials</h5>
+              <p className="text-muted mb-0">
+                Gear up with premium jackets and cozy layers designed for
+                ultimate comfort and style.
+              </p>
             </div>
           </div>
-        ))}
+        </div>
+        <div className="col-md-6">
+          <div className="card h-100 border-0 shadow-sm p-3 d-flex flex-row align-items-center bg-light">
+            <div
+              className="rounded me-3"
+              style={{
+                width: "120px",
+                height: "120px",
+                overflow: "hidden",
+                flexShrink: 0,
+              }}
+            >
+              <img
+                src="https://images.unsplash.com/photo-1521334884684-d80222895322?w=300&q=80"
+                alt="collection"
+                className="w-100 h-100"
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+            <div>
+              <small className="text-uppercase text-muted">Trending Now</small>
+              <h5 className="fw-bold mt-2 mb-2">Urban Streetwear</h5>
+              <p className="text-muted mb-0">
+                Elevate your look with bold patterns and versatile pieces
+                perfect for city adventures.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
