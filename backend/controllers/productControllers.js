@@ -61,6 +61,16 @@ export const createProduct = async (req, res) => {
 //       filter.categoryType = category;
 //     }
 
+//     // ✅ Filter by max price (NEW: Fixes the slider)
+//     if (req.query.maxPrice) {
+//       filter.price = { $lte: Number(req.query.maxPrice) };
+//     }
+
+//     // ✅ Filter by min rating (NEW: For completeness)
+//     if (req.query.minRating) {
+//       filter.rating = { $gte: Number(req.query.minRating) };
+//     }
+
 //     let query = Product.find(filter).populate("category");
 
 //     // ✅ Price sorting
@@ -81,7 +91,7 @@ export const createProduct = async (req, res) => {
 
 export const getAllProducts = async (req, res) => {
   try {
-    const { q, category, sort } = req.query;
+    const { q, category, sort, minPrice, maxPrice, minRating } = req.query;
     const filter = {};
 
     // ✅ Search by name (q=)
@@ -92,14 +102,16 @@ export const getAllProducts = async (req, res) => {
       filter.categoryType = category;
     }
 
-    // ✅ Filter by max price (NEW: Fixes the slider)
-    if (req.query.maxPrice) {
-      filter.price = { $lte: Number(req.query.maxPrice) };
+    // ✅ Filter by price range (minPrice and maxPrice)
+    if (minPrice || maxPrice) {
+      filter.price = {};
+      if (minPrice) filter.price.$gte = Number(minPrice);
+      if (maxPrice) filter.price.$lte = Number(maxPrice);
     }
 
-    // ✅ Filter by min rating (NEW: For completeness)
-    if (req.query.minRating) {
-      filter.rating = { $gte: Number(req.query.minRating) };
+    // ✅ Filter by min rating
+    if (minRating) {
+      filter.rating = { $gte: Number(minRating) };
     }
 
     let query = Product.find(filter).populate("category");
