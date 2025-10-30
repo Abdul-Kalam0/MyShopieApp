@@ -72,7 +72,7 @@ export default function FiltersSidebar({ applied, onChange, onClear }) {
             onChange={() => update({ minPrice: 2000, maxPrice: undefined })}
           />
           <label className="form-check-label" htmlFor="above2000">
-            Above ₹2000
+            All
           </label>
         </div>
       </div>
