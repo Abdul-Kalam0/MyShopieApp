@@ -6,16 +6,21 @@ export default function Profile() {
 
   if (!user) {
     return (
-      <div className="container my-5 d-flex justify-content-center">
-        <div
-          className="text-center border rounded p-4 shadow-sm bg-white"
-          style={{ maxWidth: "400px" }}
-        >
-          <h5 className="fw-semibold mb-2">Login Required</h5>
-          <p className="text-muted mb-3">Please log in to view your account.</p>
-          <Link to="/login" className="btn btn-primary w-100 btn-sm">
-            Login
-          </Link>
+      <div className="container my-5 d-flex justify-content-center align-items-center vh-50">
+        <div className="card shadow-lg border-0" style={{ maxWidth: "400px" }}>
+          <div className="card-body text-center p-4">
+            <div className="mb-3">
+              <i className="bi bi-person-circle fs-1 text-muted"></i>{" "}
+              {/* Bootstrap icon for modern touch */}
+            </div>
+            <h5 className="card-title fw-bold mb-3">Access Your Profile</h5>
+            <p className="card-text text-muted mb-4">
+              Please log in to view and manage your account details.
+            </p>
+            <Link to="/login" className="btn btn-primary w-100">
+              Login Now
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -23,28 +28,58 @@ export default function Profile() {
 
   return (
     <div className="container my-5">
-      <h4 className="fw-semibold mb-3">User Profile</h4>
-
-      <div className="border rounded p-4 bg-white shadow-sm">
-        <div className="mb-3">
-          <p className="mb-1">
-            <strong>Name:</strong> {user.name}
-          </p>
-          <p className="mb-1">
-            <strong>Email:</strong> {user.email}
-          </p>
-          <p className="mb-0">
-            <strong>Phone:</strong> {user.mobileNumber}
-          </p>
-        </div>
-
-        <div className="d-flex justify-content-end gap-2">
-          <Link to="/orders" className="btn btn-outline-secondary btn-sm">
-            Order History
-          </Link>
-          <Link to="/checkout" className="btn btn-primary btn-sm">
-            Add New Address
-          </Link>
+      <div className="row justify-content-center">
+        <div className="col-lg-8 col-md-10">
+          <div className="card shadow-lg border-0">
+            <div className="card-header bg-primary text-white">
+              <h4 className="card-title mb-0 fw-bold">
+                <i className="bi bi-person-fill me-2"></i>{" "}
+                {/* Bootstrap icon */}
+                Your Profile
+              </h4>
+            </div>
+            <div className="card-body p-4">
+              <div className="row g-3">
+                <div className="col-md-6">
+                  <div className="d-flex align-items-center mb-3">
+                    <i className="bi bi-person-circle text-primary me-3 fs-4"></i>
+                    <div>
+                      <small className="text-muted d-block">Full Name</small>
+                      <strong className="fs-5">{user.name}</strong>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="d-flex align-items-center mb-3">
+                    <i className="bi bi-envelope text-primary me-3 fs-4"></i>
+                    <div>
+                      <small className="text-muted d-block">
+                        Email Address
+                      </small>
+                      <strong className="fs-5">{user.email}</strong>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="d-flex align-items-center mb-3">
+                    <i className="bi bi-telephone text-primary me-3 fs-4"></i>
+                    <div>
+                      <small className="text-muted d-block">Phone Number</small>
+                      <strong className="fs-5">{user.mobileNumber}</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="card-footer bg-light d-flex justify-content-end gap-2 p-3">
+              <Link to="/orders" className="btn btn-outline-secondary">
+                <i className="bi bi-clock-history me-1"></i> Order History
+              </Link>
+              <Link to="/checkout" className="btn btn-primary">
+                <i className="bi bi-plus-circle me-1"></i> Add Address
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </div>
