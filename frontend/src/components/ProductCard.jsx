@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
   const [busy, setBusy] = useState(false);
-  const [selectedSize, setSelectedSize] = useState("M"); // Default size; adjust UX to select
+  const [selectedSize, setSelectedSize] = useState(""); // Removed default; start empty to enforce selection
 
   const addCart = async () => {
     try {
@@ -16,16 +16,29 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
       setBusy(false);
     }
   };
+
   const addWish = async () => {
+    // Prompt for size if not already selected
+    let sizeToUse = selectedSize;
+    if (!sizeToUse) {
+      sizeToUse = prompt("Please enter the size for the wishlist:");
+      if (!sizeToUse) {
+        alert("Size is required to add to wishlist."); // Or use showToast if available
+        return;
+      }
+      setSelectedSize(sizeToUse); // Update state for future use
+    }
+
     try {
       setBusy(true);
-      await post("/api/wishlist", { productId: p._id });
+      await post("/api/wishlist", { productId: p._id, size: sizeToUse }); // Include size in the request
       onAddedWishlist?.(p);
       window.dispatchEvent(new Event("wishlist-updated"));
     } finally {
       setBusy(false);
     }
   };
+
   return (
     <div className="card h-100 card-hover position-relative">
       {p.discountPercent ? (
@@ -66,6 +79,8 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
             value={selectedSize}
             onChange={(e) => setSelectedSize(e.target.value)}
           >
+            <option value="">Select Size</option>{" "}
+            {/* Added empty option to enforce selection */}
             {(p.sizes || ["S", "M", "L", "XL"]).map((s) => (
               <option key={s} value={s}>
                 {s}
