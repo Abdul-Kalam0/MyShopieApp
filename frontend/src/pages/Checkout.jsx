@@ -15,7 +15,7 @@ export default function Checkout({ showToast }) {
     zip: "",
     phone: "",
   });
-  const [editing, setEditing] = useState(null); // For editing
+  const [editing, setEditing] = useState(null);
   const [cart, setCart] = useState(null);
   const navigate = useNavigate();
 

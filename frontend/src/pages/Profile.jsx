@@ -11,7 +11,6 @@ export default function Profile() {
           <div className="card-body text-center p-4">
             <div className="mb-3">
               <i className="bi bi-person-circle fs-1 text-muted"></i>{" "}
-              {/* Bootstrap icon for modern touch */}
             </div>
             <h5 className="card-title fw-bold mb-3">Access Your Profile</h5>
             <p className="card-text text-muted mb-4">
@@ -33,9 +32,7 @@ export default function Profile() {
           <div className="card shadow-lg border-0">
             <div className="card-header bg-primary text-white">
               <h4 className="card-title mb-0 fw-bold">
-                <i className="bi bi-person-fill me-2"></i>{" "}
-                {/* Bootstrap icon */}
-                <button className="btn btn-danger btn-sm">Profile</button>
+                <i className="bi bi-person-fill me-2"></i> Profile
               </h4>
             </div>
             <div className="card-body p-4">

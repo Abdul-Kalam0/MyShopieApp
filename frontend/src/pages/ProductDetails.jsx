@@ -19,13 +19,13 @@ export default function ProductDetails({ showToast }) {
   if (!p) return <Loader />;
 
   const addToCart = async () => {
-    if (!size) return showToast("danger", "Please select a size first");
-
+    if (!size) {
+      showToast("warning", "Please choose a size before adding to cart.");
+      return;
+    }
     try {
       await post("/api/cart", { productId: p._id, qty, size });
-      showToast("primary", "Added to Cart");
-
-      // 👉 MANUAL UPDATE for Navbar
+      showToast("success", "Added to Cart");
       window.dispatchEvent(new Event("cart-updated"));
     } catch (err) {
       if (err?.response?.status === 401) {
@@ -36,9 +36,14 @@ export default function ProductDetails({ showToast }) {
   };
 
   const addToWish = async () => {
+    if (!size) {
+      showToast("warning", "Please choose a size before adding to wishlist.");
+      return;
+    }
     try {
       await post("/api/wishlist", { productId: p._id });
-      showToast("secondary", "Added to Wishlist");
+      showToast("success", "Added to Wishlist");
+      window.dispatchEvent(new Event("wishlist-updated"));
     } catch (err) {
       if (err?.response?.status === 401) {
         showToast("danger", "Please login first");

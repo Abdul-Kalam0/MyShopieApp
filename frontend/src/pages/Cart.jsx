@@ -30,7 +30,7 @@ export default function Cart({ showToast }) {
     await del("/api/cart", { productId: pid, size });
     showToast("secondary", "Moved to Wishlist");
     load();
-    window.dispatchEvent(new Event("wishlist-updated")); // Refresh counts
+    window.dispatchEvent(new Event("wishlist-updated"));
   };
 
   const price = cart.items.reduce(
@@ -73,8 +73,7 @@ export default function Cart({ showToast }) {
                     </div>
                     <div className="mb-2">
                       <span className="text-muted">Size: {it.size}</span>
-                    </div>{" "}
-                    {/* Display size */}
+                    </div>
                     <div className="d-flex align-items-center gap-2">
                       <span className="text-muted">Quantity:</span>
                       <div
@@ -124,8 +123,7 @@ export default function Cart({ showToast }) {
                         onClick={() => moveToWishlist(it.product._id, it.size)}
                       >
                         Move to Wishlist
-                      </button>{" "}
-                      {/* Move to Wishlist */}
+                      </button>
                     </div>
                   </div>
                 </div>
