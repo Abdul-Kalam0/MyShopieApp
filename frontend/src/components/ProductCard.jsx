@@ -94,7 +94,7 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
             className="btn btn-primary w-100"
             onClick={addCart}
           >
-            Add to Cart
+            Add too Cart
           </button>
           <button
             disabled={busy}
