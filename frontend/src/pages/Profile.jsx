@@ -35,7 +35,7 @@ export default function Profile() {
               <h4 className="card-title mb-0 fw-bold">
                 <i className="bi bi-person-fill me-2"></i>{" "}
                 {/* Bootstrap icon */}
-                Your Profile
+                <button className="btn btn-danger btn-sm">Profile</button>
               </h4>
             </div>
             <div className="card-body p-4">
