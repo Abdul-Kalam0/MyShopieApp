@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import { post } from "../services/api";
 import { useState } from "react";
-import useToast from "../hooks/useToast"; // Assuming useToast is in a hooks folder; adjust path as needed
+import useToast from "../hooks/useToast";
 
 export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
   const [busy, setBusy] = useState(false);
-  const [selectedSize, setSelectedSize] = useState(""); // Start empty to enforce selection
-  const { show: showToast } = useToast(); // Destructure show as showToast for clarity
+  const [selectedSize, setSelectedSize] = useState("");
+  const { show: showToast } = useToast();
 
   const addCart = async () => {
     if (!selectedSize) {
@@ -18,7 +18,7 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
       await post("/api/cart", { productId: p._id, qty: 1, size: selectedSize });
       onAddedCart?.(p);
       window.dispatchEvent(new Event("cart-updated"));
-      showToast("success", "Added to Cart!"); // Optional: Success notification
+      showToast("success", "Added to Cart!");
     } finally {
       setBusy(false);
     }
@@ -34,7 +34,7 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
       await post("/api/wishlist", { productId: p._id, size: selectedSize });
       onAddedWishlist?.(p);
       window.dispatchEvent(new Event("wishlist-updated"));
-      showToast("success", "Added to Wishlist!"); // Optional: Success notification
+      showToast("success", "Added to Wishlist!");
     } finally {
       setBusy(false);
     }
@@ -42,11 +42,12 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
 
   return (
     <div className="card h-100 card-hover position-relative">
-      {p.discountPercent ? (
+      {p.discountPercent && (
         <span className="badge text-bg-danger badge-discount">
           {p.discountPercent}% off
         </span>
-      ) : null}
+      )}
+
       <Link className="text-decoration-none text-dark" to={`/product/${p._id}`}>
         <img
           className="card-img-top product-img"
@@ -54,6 +55,7 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
           alt={p.name}
         />
       </Link>
+
       <div className="card-body d-flex flex-column">
         <Link
           className="text-decoration-none text-dark"
@@ -61,34 +63,47 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
         >
           <h6 className="card-title">{p.name}</h6>
         </Link>
+
         <div className="mb-2">
           <strong>₹{p.price}</strong>{" "}
-          {p.originalPrice ? (
+          {p.originalPrice && (
             <span className="text-muted text-decoration-line-through small">
               ₹{p.originalPrice}
             </span>
-          ) : null}
+          )}
         </div>
+
         <div className="text-warning mb-2">
           {"★".repeat(Math.round(p.rating || 0))}
           <span className="text-muted small"> ({p.numReviews || 0})</span>
         </div>
+
+        {/* ✅ SIZE BUTTONS */}
         <div className="mb-2">
-          <label className="form-label small">Size:</label>
-          <select
-            className="form-select form-select-sm"
-            value={selectedSize}
-            onChange={(e) => setSelectedSize(e.target.value)}
-          >
-            <option value="">Select Size</option>{" "}
-            {/* Empty option to enforce selection */}
+          <label className="form-label small d-block mb-1">Size:</label>
+          <div className="d-flex gap-2 flex-wrap">
             {(p.sizes || ["S", "M", "L", "XL"]).map((s) => (
-              <option key={s} value={s}>
+              <button
+                key={s}
+                type="button"
+                className={`btn btn-sm border ${
+                  selectedSize === s
+                    ? "btn-dark text-white"
+                    : "bg-white text-dark"
+                }`}
+                style={{
+                  minWidth: "40px",
+                  borderRadius: "6px",
+                  fontWeight: "500",
+                }}
+                onClick={() => setSelectedSize(s)}
+              >
                 {s}
-              </option>
+              </button>
             ))}
-          </select>
+          </div>
         </div>
+
         <div className="mt-auto d-flex gap-2">
           <button
             disabled={busy}
