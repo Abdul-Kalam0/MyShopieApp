@@ -1,39 +1,40 @@
 import { Link } from "react-router-dom";
 import { post } from "../services/api";
 import { useState } from "react";
+import useToast from "../hooks/useToast"; // Assuming useToast is in a hooks folder; adjust path as needed
 
 export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
   const [busy, setBusy] = useState(false);
-  const [selectedSize, setSelectedSize] = useState(""); // Removed default; start empty to enforce selection
+  const [selectedSize, setSelectedSize] = useState(""); // Start empty to enforce selection
+  const { show: showToast } = useToast(); // Destructure show as showToast for clarity
 
   const addCart = async () => {
+    if (!selectedSize) {
+      showToast("warning", "Please select a size before adding to cart.");
+      return;
+    }
     try {
       setBusy(true);
       await post("/api/cart", { productId: p._id, qty: 1, size: selectedSize });
       onAddedCart?.(p);
       window.dispatchEvent(new Event("cart-updated"));
+      showToast("success", "Added to Cart!"); // Optional: Success notification
     } finally {
       setBusy(false);
     }
   };
 
   const addWish = async () => {
-    // Prompt for size if not already selected
-    let sizeToUse = selectedSize;
-    if (!sizeToUse) {
-      sizeToUse = prompt("Please enter the size for the wishlist:");
-      if (!sizeToUse) {
-        alert("Size is required to add to wishlist."); // Or use showToast if available
-        return;
-      }
-      setSelectedSize(sizeToUse); // Update state for future use
+    if (!selectedSize) {
+      showToast("warning", "Please select a size before adding to wishlist.");
+      return;
     }
-
     try {
       setBusy(true);
-      await post("/api/wishlist", { productId: p._id, size: sizeToUse }); // Include size in the request
+      await post("/api/wishlist", { productId: p._id, size: selectedSize });
       onAddedWishlist?.(p);
       window.dispatchEvent(new Event("wishlist-updated"));
+      showToast("success", "Added to Wishlist!"); // Optional: Success notification
     } finally {
       setBusy(false);
     }
@@ -80,7 +81,7 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
             onChange={(e) => setSelectedSize(e.target.value)}
           >
             <option value="">Select Size</option>{" "}
-            {/* Added empty option to enforce selection */}
+            {/* Empty option to enforce selection */}
             {(p.sizes || ["S", "M", "L", "XL"]).map((s) => (
               <option key={s} value={s}>
                 {s}
@@ -94,7 +95,7 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
             className="btn btn-primary w-100"
             onClick={addCart}
           >
-            Add too Cart
+            Add to Cart
           </button>
           <button
             disabled={busy}
