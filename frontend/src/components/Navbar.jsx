@@ -4,12 +4,14 @@ import { useAuth } from "../context/AuthContext";
 
 export default function Navbar({ onSearch }) {
   const [q, setQ] = useState("");
+  const [showMenu, setShowMenu] = useState(false);
   const { user, cartCount, wishCount, logout, refreshCounts } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
     refreshCounts();
+    setShowMenu(false); // close menu when route changes
   }, [location.pathname, refreshCounts]);
 
   const handleSubmit = (e) => {
@@ -26,7 +28,7 @@ export default function Navbar({ onSearch }) {
           MyShoppingSite
         </Link>
 
-        {/* Search */}
+        {/* Search bar (hidden on mobile) */}
         <form
           className="d-none d-md-flex flex-fill mx-4"
           onSubmit={handleSubmit}
@@ -40,8 +42,8 @@ export default function Navbar({ onSearch }) {
           />
         </form>
 
-        {/* Right Side Buttons */}
-        <div className="d-flex align-items-center gap-3">
+        {/* Desktop Menu */}
+        <div className="d-none d-md-flex align-items-center gap-3">
           {!user ? (
             <>
               <button
@@ -59,17 +61,15 @@ export default function Navbar({ onSearch }) {
             </>
           ) : (
             <>
-              {/* ✅ Circular Profile Avatar */}
+              {/* ✅ Circle Avatar */}
               <NavLink
                 to="/profile"
                 className="d-flex align-items-center justify-content-center rounded-circle bg-primary text-white"
                 style={{
                   width: "34px",
                   height: "34px",
-                  fontSize: "16px",
                   fontWeight: "600",
-                  textDecoration: "none",
-                  cursor: "pointer",
+                  fontSize: "16px",
                 }}
                 title={user.name}
               >
@@ -98,7 +98,89 @@ export default function Navbar({ onSearch }) {
             </span>
           </NavLink>
         </div>
+
+        {/* ☰ Mobile Hamburger Button */}
+        <button
+          className="btn d-md-none"
+          onClick={() => setShowMenu(!showMenu)}
+        >
+          <i className="bi bi-list fs-2"></i>
+        </button>
       </div>
+
+      {/* ✅ Mobile Dropdown Menu */}
+      {showMenu && (
+        <div className="mobile-menu bg-white shadow-sm border-top py-3 px-3 d-md-none">
+          {/* Search box in phone */}
+          <form onSubmit={handleSubmit}>
+            <input
+              className="form-control mb-3"
+              type="search"
+              placeholder="Search for products"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+            />
+          </form>
+
+          {!user ? (
+            <>
+              <button
+                className="btn btn-outline-primary w-100 mb-2"
+                onClick={() => navigate("/login")}
+              >
+                Login
+              </button>
+              <button
+                className="btn btn-primary w-100 mb-3"
+                onClick={() => navigate("/register")}
+              >
+                Register
+              </button>
+            </>
+          ) : (
+            <>
+              {/* Avatar + Name */}
+              <div className="d-flex align-items-center mb-3">
+                <div
+                  className="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center"
+                  style={{
+                    width: "38px",
+                    height: "38px",
+                    fontSize: "17px",
+                    fontWeight: "600",
+                  }}
+                >
+                  {user.name?.charAt(0).toUpperCase()}
+                </div>
+                <span className="ms-2 fw-semibold">{user.name}</span>
+              </div>
+
+              <button className="btn btn-danger w-100 mb-3" onClick={logout}>
+                Logout
+              </button>
+            </>
+          )}
+
+          {/* Mobile icons */}
+          <div className="d-flex justify-content-between">
+            <NavLink
+              to="/wishlist"
+              className="btn btn-light position-relative w-50 me-2"
+            >
+              <i className="bi bi-heart fs-5"></i>
+              <span className="badge bg-danger ms-1">{wishCount}</span>
+            </NavLink>
+
+            <NavLink
+              to="/cart"
+              className="btn btn-light position-relative w-50"
+            >
+              <i className="bi bi-cart fs-5"></i>
+              <span className="badge bg-danger ms-1">{cartCount}</span>
+            </NavLink>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
