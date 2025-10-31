@@ -11,7 +11,7 @@ export default function Navbar({ onSearch }) {
 
   useEffect(() => {
     refreshCounts();
-    setShowMenu(false); // close menu when route changes
+    setShowMenu(false);
   }, [location.pathname, refreshCounts]);
 
   const handleSubmit = (e) => {
@@ -28,7 +28,7 @@ export default function Navbar({ onSearch }) {
           MyShoppingSite
         </Link>
 
-        {/* Search bar (hidden on mobile) */}
+        {/* Search bar desktop */}
         <form
           className="d-none d-md-flex flex-fill mx-4"
           onSubmit={handleSubmit}
@@ -42,7 +42,7 @@ export default function Navbar({ onSearch }) {
           />
         </form>
 
-        {/* Desktop Menu */}
+        {/* Desktop buttons */}
         <div className="d-none d-md-flex align-items-center gap-3">
           {!user ? (
             <>
@@ -61,15 +61,15 @@ export default function Navbar({ onSearch }) {
             </>
           ) : (
             <>
-              {/* ✅ Circle Avatar */}
               <NavLink
                 to="/profile"
                 className="d-flex align-items-center justify-content-center rounded-circle bg-primary text-white"
                 style={{
                   width: "34px",
                   height: "34px",
-                  fontWeight: "600",
                   fontSize: "16px",
+                  fontWeight: "600",
+                  cursor: "pointer",
                 }}
                 title={user.name}
               >
@@ -85,7 +85,7 @@ export default function Navbar({ onSearch }) {
           {/* Wishlist */}
           <NavLink to="/wishlist" className="btn btn-light position-relative">
             <i className="bi bi-heart fs-5"></i>
-            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            <span className="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle">
               {wishCount}
             </span>
           </NavLink>
@@ -93,13 +93,13 @@ export default function Navbar({ onSearch }) {
           {/* Cart */}
           <NavLink to="/cart" className="btn btn-light position-relative">
             <i className="bi bi-cart fs-5"></i>
-            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            <span className="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle">
               {cartCount}
             </span>
           </NavLink>
         </div>
 
-        {/* ☰ Mobile Hamburger Button */}
+        {/* Mobile hamburger */}
         <button
           className="btn d-md-none"
           onClick={() => setShowMenu(!showMenu)}
@@ -108,10 +108,10 @@ export default function Navbar({ onSearch }) {
         </button>
       </div>
 
-      {/* ✅ Mobile Dropdown Menu */}
+      {/* Mobile dropdown */}
       {showMenu && (
-        <div className="mobile-menu bg-white shadow-sm border-top py-3 px-3 d-md-none">
-          {/* Search box in phone */}
+        <div className="bg-white shadow-sm border-top py-3 px-3 d-md-none">
+          {/* Mobile search */}
           <form onSubmit={handleSubmit}>
             <input
               className="form-control mb-3"
@@ -139,8 +139,12 @@ export default function Navbar({ onSearch }) {
             </>
           ) : (
             <>
-              {/* Avatar + Name */}
-              <div className="d-flex align-items-center mb-3">
+              {/* ✅ Mobile Profile Avatar — Click works */}
+              <div
+                className="d-flex align-items-center mb-3"
+                role="button"
+                onClick={() => navigate("/profile")}
+              >
                 <div
                   className="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center"
                   style={{
@@ -161,7 +165,7 @@ export default function Navbar({ onSearch }) {
             </>
           )}
 
-          {/* Mobile icons */}
+          {/* Mobile Wishlist / Cart */}
           <div className="d-flex justify-content-between">
             <NavLink
               to="/wishlist"
