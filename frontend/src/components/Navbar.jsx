@@ -1,4 +1,3 @@
-// src/components/Navbar.jsx
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
@@ -11,7 +10,6 @@ export default function Navbar({ onSearch }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // keep counts refreshed on route changes
     refreshCounts();
   }, [location.pathname, refreshCounts]);
 
@@ -60,6 +58,10 @@ export default function Navbar({ onSearch }) {
           ) : (
             <>
               <span className="fw-semibold">Hi, {user.name}</span>
+              <NavLink to="/profile" className="btn btn-link">
+                Profile
+              </NavLink>{" "}
+              {/* Added Profile link */}
               <button className="btn btn-danger btn-sm" onClick={logout}>
                 Logout
               </button>
