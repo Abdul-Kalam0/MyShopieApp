@@ -40,7 +40,7 @@ app.use((req, res, next) => {
  */
 app.use(
   cors({
-    origin: "https://my-shopie-app-5ls3.vercel.app",
+    origin: "https://my-shopie-app-001.vercel.app",
     credentials: true, // ✅ allow cookies/JWT
   })
 );
