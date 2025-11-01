@@ -66,6 +66,17 @@ export default function Profile() {
                     </div>
                   </div>
                 </div>
+                <div className="col-md-6">
+                  <div className="d-flex align-items-center mb-3">
+                    <i className="bi bi-geo-alt text-primary me-3 fs-4"></i>
+                    <div>
+                      <small className="text-muted d-block">Address</small>
+                      <strong className="fs-5">
+                        {user.address || "Not provided"}
+                      </strong>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="card-footer bg-light d-flex justify-content-end gap-2 p-3">

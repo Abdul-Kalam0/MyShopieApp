@@ -12,6 +12,10 @@ export default function ProductCard({
   const [selectedSize, setSelectedSize] = useState("");
 
   const addCart = async () => {
+    if (!localStorage.getItem("token")) {
+      showToast("warning", "Please login");
+      return;
+    }
     if (!selectedSize) {
       showToast("warning", "Please select a size before adding to cart.");
       return;
@@ -30,6 +34,10 @@ export default function ProductCard({
   };
 
   const addWish = async () => {
+    if (!localStorage.getItem("token")) {
+      showToast("warning", "Please login");
+      return;
+    }
     if (!selectedSize) {
       showToast("warning", "Please select a size before adding to wishlist.");
       return;
