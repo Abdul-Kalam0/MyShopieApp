@@ -19,6 +19,8 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
       onAddedCart?.(p);
       window.dispatchEvent(new Event("cart-updated"));
       showToast("success", "Added to Cart!");
+    } catch (err) {
+      showToast("danger", "Failed to add to cart. Please try again.");
     } finally {
       setBusy(false);
     }
@@ -35,24 +37,36 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
       onAddedWishlist?.(p);
       window.dispatchEvent(new Event("wishlist-updated"));
       showToast("success", "Added to Wishlist!");
+    } catch (err) {
+      showToast("danger", "Failed to add to wishlist. Please try again.");
     } finally {
       setBusy(false);
     }
   };
 
   return (
-    <div className="card h-100 card-hover position-relative">
+    <div
+      className="card h-100 position-relative shadow-sm"
+      style={{ transition: "box-shadow 0.2s ease" }}
+      onMouseEnter={(e) =>
+        (e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)")
+      }
+      onMouseLeave={(e) =>
+        (e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.1)")
+      }
+    >
       {p.discountPercent && (
-        <span className="badge text-bg-danger badge-discount">
+        <span className="badge bg-danger position-absolute top-0 start-0 m-2">
           {p.discountPercent}% off
         </span>
       )}
 
       <Link className="text-decoration-none text-dark" to={`/product/${p._id}`}>
         <img
-          className="card-img-top product-img"
+          className="card-img-top img-fluid"
           src={p.imageUrl}
           alt={p.name}
+          style={{ height: "200px", objectFit: "cover" }}
         />
       </Link>
 
@@ -61,11 +75,11 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
           className="text-decoration-none text-dark"
           to={`/product/${p._id}`}
         >
-          <h6 className="card-title">{p.name}</h6>
+          <h6 className="card-title fw-semibold">{p.name}</h6>
         </Link>
 
         <div className="mb-2">
-          <strong>₹{p.price}</strong>{" "}
+          <strong className="text-primary">₹{p.price}</strong>{" "}
           {p.originalPrice && (
             <span className="text-muted text-decoration-line-through small">
               ₹{p.originalPrice}
@@ -73,14 +87,14 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
           )}
         </div>
 
-        <div className="text-warning mb-2">
+        <div className="text-warning mb-3">
           {"★".repeat(Math.round(p.rating || 0))}
-          <span className="text-muted small"> ({p.numReviews || 0})</span>
+          <span className="text-muted small ms-1">({p.numReviews || 0})</span>
         </div>
 
-        {/* ✅ SIZE BUTTONS */}
-        <div className="mb-2">
-          <label className="form-label small d-block mb-1">Size:</label>
+        {/* SIZE BUTTONS */}
+        <div className="mb-3">
+          <label className="form-label small fw-semibold mb-2">Size:</label>
           <div className="d-flex gap-2 flex-wrap">
             {(p.sizes || ["S", "M", "L", "XL"]).map((s) => (
               <button
@@ -88,15 +102,18 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
                 type="button"
                 className={`btn btn-sm border ${
                   selectedSize === s
-                    ? "btn-dark text-white"
-                    : "bg-white text-dark"
+                    ? "btn-dark text-white shadow-sm"
+                    : "btn-outline-secondary"
                 }`}
                 style={{
-                  minWidth: "40px",
+                  minWidth: "45px",
                   borderRadius: "6px",
                   fontWeight: "500",
+                  transition: "all 0.2s ease",
                 }}
                 onClick={() => setSelectedSize(s)}
+                onMouseEnter={(e) => (e.target.style.transform = "scale(1.05)")}
+                onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
               >
                 {s}
               </button>
@@ -107,17 +124,18 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
         <div className="mt-auto d-flex gap-2">
           <button
             disabled={busy}
-            className="btn btn-primary w-100"
+            className="btn btn-primary flex-fill"
             onClick={addCart}
           >
-            Add to Cart
+            {busy ? "Adding..." : "Add to Cart"}
           </button>
           <button
             disabled={busy}
             className="btn btn-outline-secondary"
             onClick={addWish}
+            title="Add to Wishlist"
           >
-            <i className="bi bi-heart"></i>
+            <i className="bi bi-heart text-danger"></i>
           </button>
         </div>
       </div>
