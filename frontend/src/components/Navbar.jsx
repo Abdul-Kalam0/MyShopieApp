@@ -25,7 +25,7 @@ export default function Navbar({ onSearch }) {
       <div className="container container-narrow d-flex align-items-center justify-content-between py-2">
         {/* Logo */}
         <Link to="/" className="navbar-brand fw-bold fs-4">
-          MyShoppingSite
+          Shopie — Fashion Store
         </Link>
 
         {/* Search bar desktop */}
