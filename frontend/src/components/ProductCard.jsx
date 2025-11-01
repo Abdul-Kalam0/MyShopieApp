@@ -6,7 +6,7 @@ import useToast from "../hooks/useToast";
 export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
   const [busy, setBusy] = useState(false);
   const [selectedSize, setSelectedSize] = useState("");
-  const { show: showToast } = useToast();
+  const { toast, show: showToast, hide } = useToast(); // Updated to get toast and hide
 
   const addCart = async () => {
     if (!selectedSize) {
@@ -45,100 +45,148 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
   };
 
   return (
-    <div
-      className="card h-100 position-relative shadow-sm"
-      style={{ transition: "box-shadow 0.2s ease" }}
-      onMouseEnter={(e) =>
-        (e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)")
-      }
-      onMouseLeave={(e) =>
-        (e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.1)")
-      }
-    >
-      {p.discountPercent && (
-        <span className="badge bg-danger position-absolute top-0 start-0 m-2">
-          {p.discountPercent}% off
-        </span>
-      )}
+    <>
+      <div
+        className="card h-100 position-relative shadow-sm"
+        style={{ transition: "box-shadow 0.2s ease" }}
+        onMouseEnter={(e) =>
+          (e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)")
+        }
+        onMouseLeave={(e) =>
+          (e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.1)")
+        }
+      >
+        {p.discountPercent && (
+          <span className="badge bg-danger position-absolute top-0 start-0 m-2">
+            {p.discountPercent}% off
+          </span>
+        )}
 
-      <Link className="text-decoration-none text-dark" to={`/product/${p._id}`}>
-        <img
-          className="card-img-top img-fluid"
-          src={p.imageUrl}
-          alt={p.name}
-          style={{ height: "200px", objectFit: "cover" }}
-        />
-      </Link>
-
-      <div className="card-body d-flex flex-column">
         <Link
           className="text-decoration-none text-dark"
           to={`/product/${p._id}`}
         >
-          <h6 className="card-title fw-semibold">{p.name}</h6>
+          <img
+            className="card-img-top img-fluid"
+            src={p.imageUrl}
+            alt={p.name}
+            style={{ height: "200px", objectFit: "cover" }}
+          />
         </Link>
 
-        <div className="mb-2">
-          <strong className="text-primary">₹{p.price}</strong>{" "}
-          {p.originalPrice && (
-            <span className="text-muted text-decoration-line-through small">
-              ₹{p.originalPrice}
-            </span>
-          )}
-        </div>
+        <div className="card-body d-flex flex-column">
+          <Link
+            className="text-decoration-none text-dark"
+            to={`/product/${p._id}`}
+          >
+            <h6 className="card-title fw-semibold">{p.name}</h6>
+          </Link>
 
-        <div className="text-warning mb-3">
-          {"★".repeat(Math.round(p.rating || 0))}
-          <span className="text-muted small ms-1">({p.numReviews || 0})</span>
-        </div>
+          <div className="mb-2">
+            <strong className="text-primary">₹{p.price}</strong>{" "}
+            {p.originalPrice && (
+              <span className="text-muted text-decoration-line-through small">
+                ₹{p.originalPrice}
+              </span>
+            )}
+          </div>
 
-        {/* SIZE BUTTONS */}
-        <div className="mb-3">
-          <label className="form-label small fw-semibold mb-2">Size:</label>
-          <div className="d-flex gap-2 flex-wrap">
-            {(p.sizes || ["S", "M", "L", "XL"]).map((s) => (
-              <button
-                key={s}
-                type="button"
-                className={`btn btn-sm border ${
-                  selectedSize === s
-                    ? "btn-dark text-white shadow-sm"
-                    : "btn-outline-secondary"
-                }`}
-                style={{
-                  minWidth: "45px",
-                  borderRadius: "6px",
-                  fontWeight: "500",
-                  transition: "all 0.2s ease",
-                }}
-                onClick={() => setSelectedSize(s)}
-                onMouseEnter={(e) => (e.target.style.transform = "scale(1.05)")}
-                onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
-              >
-                {s}
-              </button>
-            ))}
+          <div className="text-warning mb-3">
+            {"★".repeat(Math.round(p.rating || 0))}
+            <span className="text-muted small ms-1">({p.numReviews || 0})</span>
+          </div>
+
+          {/* SIZE BUTTONS */}
+          <div className="mb-3">
+            <label className="form-label small fw-semibold mb-2">Size:</label>
+            <div className="d-flex gap-2 flex-wrap">
+              {(p.sizes || ["S", "M", "L", "XL"]).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`btn btn-sm border ${
+                    selectedSize === s
+                      ? "btn-dark text-white shadow-sm"
+                      : "btn-outline-secondary"
+                  }`}
+                  style={{
+                    minWidth: "45px",
+                    borderRadius: "6px",
+                    fontWeight: "500",
+                    transition: "all 0.2s ease",
+                  }}
+                  onClick={() => setSelectedSize(s)}
+                  onMouseEnter={(e) =>
+                    (e.target.style.transform = "scale(1.05)")
+                  }
+                  onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-auto d-flex gap-2">
+            <button
+              disabled={busy}
+              className="btn btn-primary flex-fill"
+              onClick={addCart}
+            >
+              {busy ? "Adding..." : "Add to Cart"}
+            </button>
+            <button
+              disabled={busy}
+              className="btn btn-outline-secondary"
+              onClick={addWish}
+              title="Add to Wishlist"
+            >
+              <i className="bi bi-heart text-danger"></i>
+            </button>
           </div>
         </div>
-
-        <div className="mt-auto d-flex gap-2">
-          <button
-            disabled={busy}
-            className="btn btn-primary flex-fill"
-            onClick={addCart}
-          >
-            {busy ? "Adding..." : "Add to Cart"}
-          </button>
-          <button
-            disabled={busy}
-            className="btn btn-outline-secondary"
-            onClick={addWish}
-            title="Add to Wishlist"
-          >
-            <i className="bi bi-heart text-danger"></i>
-          </button>
-        </div>
       </div>
-    </div>
+
+      {/* TOAST NOTIFICATION - Added for rendering */}
+      {toast && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: "20px",
+            right: "20px",
+            backgroundColor:
+              toast.variant === "success"
+                ? "green"
+                : toast.variant === "danger"
+                ? "red"
+                : "orange",
+            color: "white",
+            padding: "10px 20px",
+            borderRadius: "5px",
+            zIndex: 9999,
+            boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
+          }}
+          role="alert"
+        >
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={{ flex: 1 }}>{toast.message}</span>
+            <button
+              onClick={hide}
+              style={{
+                background: "none",
+                border: "none",
+                color: "white",
+                fontSize: "20px",
+                cursor: "pointer",
+                marginLeft: "10px",
+              }}
+              aria-label="Close"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
