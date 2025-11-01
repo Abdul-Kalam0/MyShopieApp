@@ -32,7 +32,15 @@ export default function Checkout({ showToast }) {
 
   if (!addresses || !cart) return <Loader />;
 
-  const requiredFields = ["name", "city", "state", "zip", "phone"];
+  const requiredFields = [
+    "name",
+    "city",
+    "state",
+    "zip",
+    "phone",
+    "line1",
+    "line2",
+  ];
 
   const addAddress = async () => {
     // ✅ Validate required fields
