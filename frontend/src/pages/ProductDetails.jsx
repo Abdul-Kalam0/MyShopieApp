@@ -2,14 +2,19 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom"; // Added Link for navigation
 import { get, post } from "../services/api";
 import Loader from "../components/Loader.jsx";
+import useToast from "../hooks/useToast"; // Added import for the hook
 
-export default function ProductDetails({ showToast }) {
+export default function ProductDetails() {
+  // Removed { showToast } from props
   const { id } = useParams();
   const navigate = useNavigate();
   const [p, setP] = useState(null);
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState("");
   const [relatedProducts, setRelatedProducts] = useState([]); // New state for related products
+
+  // Use the useToast hook
+  const { toast, show: showToast, hide } = useToast();
 
   useEffect(() => {
     // Fetch main product
@@ -277,6 +282,31 @@ export default function ProductDetails({ showToast }) {
           </p>
         )}
       </div>
+
+      {/* TOAST NOTIFICATION */}
+      {toast && (
+        <div
+          className={`toast show position-fixed bottom-0 end-0 m-3 ${
+            toast.variant === "success"
+              ? "bg-success"
+              : toast.variant === "danger"
+              ? "bg-danger"
+              : "bg-warning"
+          } text-white`}
+          role="alert"
+          style={{ zIndex: 1050 }}
+        >
+          <div className="toast-body d-flex align-items-center">
+            <span className="me-auto">{toast.message}</span>
+            <button
+              type="button"
+              className="btn-close btn-close-white ms-2"
+              onClick={hide}
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
