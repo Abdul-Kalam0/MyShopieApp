@@ -19,10 +19,12 @@ export default function ProductDetails({ showToast }) {
   if (!p) return <Loader />;
 
   const addToCart = async () => {
-    if (!size) {
-      showToast("warning", "Please choose a size before adding to cart.");
-      return;
-    }
+    if (!size)
+      return showToast(
+        "warning",
+        "Please choose a size before adding to cart."
+      );
+
     try {
       await post("/api/cart", { productId: p._id, qty, size });
       showToast("success", "Added to Cart");
@@ -35,13 +37,17 @@ export default function ProductDetails({ showToast }) {
     }
   };
 
+  const buyNow = async () => {
+    if (!size) return showToast("warning", "Please select a size");
+    await addToCart();
+    navigate("/checkout");
+  };
+
   const addToWish = async () => {
-    if (!size) {
-      showToast("warning", "Please choose a size before adding to wishlist.");
-      return;
-    }
+    if (!size) return showToast("warning", "Please choose a size first");
+
     try {
-      await post("/api/wishlist", { productId: p._id });
+      await post("/api/wishlist", { productId: p._id, size });
       showToast("success", "Added to Wishlist");
       window.dispatchEvent(new Event("wishlist-updated"));
     } catch (err) {
@@ -53,40 +59,43 @@ export default function ProductDetails({ showToast }) {
   };
 
   return (
-    <div className="container container-narrow my-4">
+    <div className="container my-4">
       <div className="row g-4">
+        {/* IMAGE */}
         <div className="col-md-5">
-          <img className="img-fluid rounded" src={p.imageUrl} alt={p.name} />
+          <img
+            className="img-fluid rounded w-100 shadow-sm"
+            src={p.imageUrl}
+            alt={p.name}
+          />
         </div>
+
+        {/* DETAILS */}
         <div className="col-md-7">
-          <h4>{p.name}</h4>
-          <div className="mb-2">
-            <strong>₹{p.price}</strong>{" "}
-            <span className="text-muted text-decoration-line-through">
-              ₹{p.originalPrice}
+          {/* Title */}
+          <h3 className="fw-bold">{p.name}</h3>
+
+          {/* Rating */}
+          <div className="text-warning mb-2">
+            {"★".repeat(Math.round(p.rating || 4))}{" "}
+            <span className="text-muted small">
+              ({p.numReviews || 35} reviews)
             </span>
           </div>
-          <div className="text-warning mb-2">
-            {"★".repeat(Math.round(p.rating || 0))}
-            <span className="text-muted small"> ({p.numReviews || 0})</span>
-          </div>
-          <div className="mb-3">
-            <label className="form-label me-2">Size:</label>
-            {(p.sizes || ["S", "M", "L", "XL"]).map((s) => (
-              <button
-                key={s}
-                className={`btn btn-sm me-2 ${
-                  size === s ? "btn-dark" : "btn-outline-secondary"
-                }`}
-                onClick={() => setSize(s)}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-          <div className="d-flex align-items-center mb-3">
-            <span className="me-2">Quantity:</span>
-            <div className="input-group" style={{ maxWidth: "140px" }}>
+
+          {/* Price */}
+          <h4 className="fw-bold text-dark">
+            ₹{p.price}{" "}
+            <span className="text-muted text-decoration-line-through fs-6">
+              ₹{p.originalPrice}
+            </span>
+          </h4>
+          <p className="text-success fw-semibold">50% off</p>
+
+          {/* Quantity Selector */}
+          <div className="d-flex align-items-center my-3">
+            <strong className="me-2">Quantity:</strong>
+            <div className="input-group" style={{ maxWidth: "150px" }}>
               <button
                 className="btn btn-outline-secondary"
                 onClick={() => setQty(Math.max(1, qty - 1))}
@@ -108,30 +117,64 @@ export default function ProductDetails({ showToast }) {
               </button>
             </div>
           </div>
-          <div className="d-flex gap-2">
-            <button className="btn btn-primary" onClick={addToCart}>
+
+          {/* Size Buttons */}
+          <strong>Size:</strong>
+          <div className="d-flex gap-2 mt-2 mb-3">
+            {(p.sizes || ["S", "M", "L", "XL"]).map((s) => (
+              <button
+                key={s}
+                className={`btn fw-semibold ${
+                  size === s ? "btn-dark text-white" : "btn-outline-secondary"
+                }`}
+                style={{ minWidth: "52px", borderRadius: "8px" }}
+                onClick={() => setSize(s)}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+
+          {/* Buttons */}
+          <div className="d-flex gap-3 mb-4">
+            <button
+              className="btn btn-primary w-50 fw-semibold"
+              onClick={buyNow}
+            >
+              Buy Now
+            </button>
+            <button
+              className="btn btn-outline-primary w-50 fw-semibold"
+              onClick={addToCart}
+            >
               Add to Cart
             </button>
-            <button className="btn btn-outline-secondary" onClick={addToWish}>
-              <i className="bi bi-heart me-1"></i> Add to Wishlist
+            <button className="btn btn-light border" onClick={addToWish}>
+              <i className="bi bi-heart fs-5"></i>
             </button>
           </div>
-          <hr />
-          <h6>Description:</h6>
+
+          {/* Icons / Benefits */}
+          <div className="d-flex gap-4 text-muted small mb-3">
+            <div>↩️ 10-day Return</div>
+            <div>💳 COD</div>
+            <div>🚚 Free Delivery</div>
+            <div>🔒 Secure Pay</div>
+          </div>
+
+          {/* Description */}
+          <h6 className="fw-bold mb-1">Description:</h6>
           <p className="text-muted">{p.description}</p>
         </div>
       </div>
 
-      <h6 className="mt-5 mb-3">More items you may like</h6>
+      {/* Related Items */}
+      <h5 className="mt-5 mb-3 fw-bold">More items you may like</h5>
       <div className="row g-3">
         {(p.related || []).map((r) => (
           <div className="col-6 col-md-3" key={r._id}>
-            <div className="card">
-              <img
-                className="card-img-top product-img"
-                src={r.imageUrl}
-                alt=""
-              />
+            <div className="card border-0 shadow-sm">
+              <img className="card-img-top" src={r.imageUrl} alt={r.name} />
             </div>
           </div>
         ))}
