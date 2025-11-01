@@ -25,13 +25,30 @@ export default function Checkout({ showToast }) {
     const c = await get("/api/cart");
     setCart(c.data || { items: [] });
   };
+
   useEffect(() => {
     load();
   }, []);
 
   if (!addresses || !cart) return <Loader />;
 
+  const requiredFields = ["name", "city", "state", "zip", "phone"];
+
   const addAddress = async () => {
+    // ✅ Validate required fields
+    for (let field of requiredFields) {
+      if (!form[field].trim()) {
+        showToast("danger", `${field.toUpperCase()} is required`);
+        return;
+      }
+    }
+
+    // ✅ Validate phone number (10 digits)
+    if (!/^\d{10}$/.test(form.phone)) {
+      showToast("danger", "Phone number must be 10 digits");
+      return;
+    }
+
     if (editing) {
       await put(`/api/addresses/${editing}`, form);
       showToast("success", "Address Updated");
@@ -40,6 +57,8 @@ export default function Checkout({ showToast }) {
       await post("/api/addresses", { ...form });
       showToast("success", "Address Added");
     }
+
+    // ✅ Reset form
     setForm({
       name: "",
       line1: "",
@@ -49,6 +68,7 @@ export default function Checkout({ showToast }) {
       zip: "",
       phone: "",
     });
+
     load();
   };
 
@@ -78,6 +98,7 @@ export default function Checkout({ showToast }) {
       <div className="row g-4">
         <div className="col-lg-8">
           <h6>Choose Address</h6>
+
           {(addresses || []).map((a) => (
             <div className="form-check card p-3 mb-2" key={a._id}>
               <input
@@ -125,12 +146,14 @@ export default function Checkout({ showToast }) {
                 </div>
               ))}
             </div>
+
             <button
               className="btn btn-outline-primary mt-2"
               onClick={addAddress}
             >
               {editing ? "Update" : "Save"} Address
             </button>
+
             {editing && (
               <button
                 className="btn btn-outline-secondary mt-2 ms-2"
@@ -152,6 +175,7 @@ export default function Checkout({ showToast }) {
             )}
           </div>
         </div>
+
         <div className="col-lg-4">
           <div className="card p-3">
             <h6>Order Summary</h6>
