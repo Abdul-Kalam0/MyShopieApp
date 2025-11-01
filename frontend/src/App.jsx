@@ -15,17 +15,20 @@ import Register from "./pages/Register.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 export default function App() {
-  const { toast, show, hide } = useToast();
+  const { toast, show, hide } = useToast(); // ✅ global toast
+
   return (
     <>
       <Navbar />
+
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home showToast={show} />} />
         <Route path="/products" element={<Products showToast={show} />} />
         <Route
           path="/product/:id"
           element={<ProductDetails showToast={show} />}
         />
+
         <Route
           path="/wishlist"
           element={
@@ -34,6 +37,7 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/cart"
           element={
@@ -42,14 +46,16 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/profile"
           element={
             <ProtectedRoute>
-              <Profile />
+              <Profile showToast={show} />
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/checkout"
           element={
@@ -58,17 +64,21 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/orders"
           element={
             <ProtectedRoute>
-              <Orders />
+              <Orders showToast={show} />
             </ProtectedRoute>
           }
         />
+
         <Route path="/login" element={<Login showToast={show} />} />
         <Route path="/register" element={<Register showToast={show} />} />
       </Routes>
+
+      {/* ✅ Single toast UI */}
       <Toast toast={toast} onClose={hide} />
     </>
   );

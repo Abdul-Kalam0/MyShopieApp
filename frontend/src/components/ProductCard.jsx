@@ -1,12 +1,15 @@
 import { Link } from "react-router-dom";
 import { post } from "../services/api";
 import { useState } from "react";
-import useToast from "../hooks/useToast";
 
-export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
+export default function ProductCard({
+  p,
+  onAddedCart,
+  onAddedWishlist,
+  showToast,
+}) {
   const [busy, setBusy] = useState(false);
   const [selectedSize, setSelectedSize] = useState("");
-  const { show: showToast } = useToast(); // ✅ only use show here
 
   const addCart = async () => {
     if (!selectedSize) {
@@ -92,7 +95,7 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
           <span className="text-muted small ms-1">({p.numReviews || 0})</span>
         </div>
 
-        {/* Size Buttons */}
+        {/* SIZE BUTTONS */}
         <div className="mb-3">
           <label className="form-label small fw-semibold mb-2">Size:</label>
           <div className="d-flex gap-2 flex-wrap">
@@ -105,12 +108,6 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
                     ? "btn-dark text-white shadow-sm"
                     : "btn-outline-secondary"
                 }`}
-                style={{
-                  minWidth: "45px",
-                  borderRadius: "6px",
-                  fontWeight: "500",
-                  transition: "all 0.2s ease",
-                }}
                 onClick={() => setSelectedSize(s)}
               >
                 {s}
@@ -132,7 +129,6 @@ export default function ProductCard({ p, onAddedCart, onAddedWishlist }) {
             disabled={busy}
             className="btn btn-outline-secondary"
             onClick={addWish}
-            title="Add to Wishlist"
           >
             <i className="bi bi-heart text-danger"></i>
           </button>
