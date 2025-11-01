@@ -22,7 +22,7 @@ export default function ProductCard({
       onAddedCart?.(p);
       window.dispatchEvent(new Event("cart-updated"));
       showToast("success", "Added to Cart!");
-    } catch {
+    } catch (err) {
       showToast("danger", "Failed to add to cart. Please try again.");
     } finally {
       setBusy(false);
@@ -40,7 +40,7 @@ export default function ProductCard({
       onAddedWishlist?.(p);
       window.dispatchEvent(new Event("wishlist-updated"));
       showToast("success", "Added to Wishlist!");
-    } catch {
+    } catch (err) {
       showToast("danger", "Failed to add to wishlist. Please try again.");
     } finally {
       setBusy(false);
@@ -108,6 +108,11 @@ export default function ProductCard({
                     ? "btn-dark text-white shadow-sm"
                     : "btn-outline-secondary"
                 }`}
+                style={{
+                  minWidth: "45px",
+                  borderRadius: "6px",
+                  fontWeight: "500",
+                }}
                 onClick={() => setSelectedSize(s)}
               >
                 {s}

@@ -27,16 +27,19 @@ export default function Products({ showToast }) {
     setLoading(true);
     const q = new URLSearchParams();
     const qp = { ...Object.fromEntries(qs.entries()), ...params };
+
     if (qp.q) q.set("q", qp.q);
     if (qp.sort) q.set("sort", qp.sort);
+
     if (qp.category && Array.isArray(qp.category)) {
-      // backend expects a single name; we will pass first for simplicity
       q.set("category", qp.category[0]);
     } else if (qp.category) {
       q.set("category", qp.category);
     }
+
     if (qp.minRating) q.set("minRating", qp.minRating);
     if (qp.maxPrice) q.set("maxPrice", qp.maxPrice);
+
     const res = await get("/api/products?" + q.toString());
     setData(res.data?.products || []);
     setLoading(false);
@@ -52,8 +55,7 @@ export default function Products({ showToast }) {
       q: qs.get("q") || "",
       category: qs.get("category") || undefined,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [qs.get("q"), qs.get("category")]);
+  }, [qs, qs.get("q"), qs.get("category")]);
 
   const onClear = () => {
     const base = { categoriesList: categories };
@@ -82,6 +84,7 @@ export default function Products({ showToast }) {
             />
           </div>
         </div>
+
         <div className="col-md-9">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <h6 className="mb-0">
@@ -89,6 +92,7 @@ export default function Products({ showToast }) {
               <span className="text-muted">({data.length} products)</span>
             </h6>
           </div>
+
           {loading ? (
             <Loader />
           ) : (
@@ -97,6 +101,7 @@ export default function Products({ showToast }) {
                 <div className="col-6 col-md-4 col-lg-3" key={p._id}>
                   <ProductCard
                     p={p}
+                    showToast={showToast}
                     onAddedCart={() => showToast("primary", "Added to Cart")}
                     onAddedWishlist={() =>
                       showToast("secondary", "Added to Wishlist")

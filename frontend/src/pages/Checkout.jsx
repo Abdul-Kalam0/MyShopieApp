@@ -43,7 +43,7 @@ export default function Checkout({ showToast }) {
       }
     }
 
-    // ✅ Validate phone number (10 digits)
+    // ✅ Validate phone number
     if (!/^\d{10}$/.test(form.phone)) {
       showToast("danger", "Phone number must be 10 digits");
       return;
@@ -58,7 +58,7 @@ export default function Checkout({ showToast }) {
       showToast("success", "Address Added");
     }
 
-    // ✅ Reset form
+    // Reset form
     setForm({
       name: "",
       line1: "",
@@ -96,9 +96,9 @@ export default function Checkout({ showToast }) {
   return (
     <div className="container container-narrow my-4">
       <div className="row g-4">
+        {/* ✅ Address Section */}
         <div className="col-lg-8">
           <h6>Choose Address</h6>
-
           {(addresses || []).map((a) => (
             <div className="form-check card p-3 mb-2" key={a._id}>
               <input
@@ -114,6 +114,7 @@ export default function Checkout({ showToast }) {
                   <strong>{a.name}</strong> — {a.line1}, {a.city}, {a.state}{" "}
                   {a.zip} • {a.phone}
                 </div>
+
                 <div className="mt-2">
                   <button
                     className="btn btn-sm btn-outline-primary me-2"
@@ -132,6 +133,7 @@ export default function Checkout({ showToast }) {
             </div>
           ))}
 
+          {/* ✅ Add / Edit Address Form */}
           <div className="card p-3 mt-3">
             <h6>{editing ? "Edit Address" : "Add New Address"}</h6>
             <div className="row g-2">
@@ -176,20 +178,25 @@ export default function Checkout({ showToast }) {
           </div>
         </div>
 
+        {/* ✅ Order Summary */}
         <div className="col-lg-4">
           <div className="card p-3">
             <h6>Order Summary</h6>
+
             <div className="small text-muted mb-2">
-              {/* Updated: Show product names instead of item count */}
-              {cart.items.length > 0
-                ? cart.items.map((item, index) => (
-                    <span key={item.product._id}>
-                      {item.product.name}
-                      {index < cart.items.length - 1 ? ", " : ""}
-                    </span>
-                  ))
-                : "No items"}
+              {cart.items.length > 0 ? (
+                <ul className="ps-3 mb-2">
+                  {cart.items.map((item) => (
+                    <li key={item.product._id}>
+                      {item.qty} × {item.product.name}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                "No items"
+              )}
             </div>
+
             <button className="btn btn-primary w-100" onClick={placeOrder}>
               Checkout
             </button>
