@@ -1,42 +1,37 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom"; // Added Link for navigation
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { get, post } from "../services/api";
 import Loader from "../components/Loader.jsx";
-import useToast from "../hooks/useToast"; // Added import for the hook
+import useToast from "../hooks/useToast";
 
 export default function ProductDetails() {
-  // Removed { showToast } from props
   const { id } = useParams();
   const navigate = useNavigate();
   const [p, setP] = useState(null);
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState("");
-  const [relatedProducts, setRelatedProducts] = useState([]); // New state for related products
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
-  // Use the useToast hook
   const { toast, show: showToast, hide } = useToast();
 
   useEffect(() => {
-    // Fetch main product
     get(`/api/products/${id}`)
       .then((r) => {
         const product = r.data?.product;
         setP(product);
-        // Fetch related products from the same category
         if (product?.category) {
           get(
             `/api/products?category=${encodeURIComponent(
               product.category
             )}&limit=6`
-          ) // Limit to 6 for brevity; adjust as needed
+          )
             .then((res) => {
               const products = res.data?.products || [];
-              // Exclude the current product from related
               setRelatedProducts(
                 products.filter((prod) => prod._id !== product._id)
               );
             })
-            .catch(() => setRelatedProducts([])); // Fallback on error
+            .catch(() => setRelatedProducts([]));
         }
       })
       .catch(() => {});
@@ -45,8 +40,12 @@ export default function ProductDetails() {
   if (!p) return <Loader />;
 
   const addToCart = async () => {
-    if (!size) return showToast("warning", "Please choose a size");
-
+    console.log("addToCart called, size:", size); // Debugging log
+    if (!size) {
+      console.log("No size selected, showing toast"); // Debugging log
+      showToast("warning", "Please choose a size");
+      return;
+    }
     try {
       await post("/api/cart", { productId: p._id, qty, size });
       showToast("success", "Added to Cart");
@@ -60,14 +59,19 @@ export default function ProductDetails() {
   };
 
   const buyNow = async () => {
-    if (!size) return showToast("warning", "Please select a size");
+    if (!size) {
+      showToast("warning", "Please select a size");
+      return;
+    }
     await addToCart();
     navigate("/checkout");
   };
 
   const addToWish = async () => {
-    if (!size) return showToast("warning", "Select size first");
-
+    if (!size) {
+      showToast("warning", "Select size first");
+      return;
+    }
     try {
       await post("/api/wishlist", { productId: p._id, size });
       showToast("success", "Added to wishlist");
@@ -283,27 +287,43 @@ export default function ProductDetails() {
         )}
       </div>
 
-      {/* TOAST NOTIFICATION */}
+      {/* TOAST NOTIFICATION - Simplified for testing */}
       {toast && (
         <div
-          className={`toast show position-fixed bottom-0 end-0 m-3 ${
-            toast.variant === "success"
-              ? "bg-success"
-              : toast.variant === "danger"
-              ? "bg-danger"
-              : "bg-warning"
-          } text-white`}
+          style={{
+            position: "fixed",
+            bottom: "20px",
+            right: "20px",
+            backgroundColor:
+              toast.variant === "success"
+                ? "green"
+                : toast.variant === "danger"
+                ? "red"
+                : "orange",
+            color: "white",
+            padding: "10px 20px",
+            borderRadius: "5px",
+            zIndex: 9999,
+            boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
+          }}
           role="alert"
-          style={{ zIndex: 1050 }}
         >
-          <div className="toast-body d-flex align-items-center">
-            <span className="me-auto">{toast.message}</span>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={{ flex: 1 }}>{toast.message}</span>
             <button
-              type="button"
-              className="btn-close btn-close-white ms-2"
               onClick={hide}
+              style={{
+                background: "none",
+                border: "none",
+                color: "white",
+                fontSize: "20px",
+                cursor: "pointer",
+                marginLeft: "10px",
+              }}
               aria-label="Close"
-            ></button>
+            >
+              ×
+            </button>
           </div>
         </div>
       )}
