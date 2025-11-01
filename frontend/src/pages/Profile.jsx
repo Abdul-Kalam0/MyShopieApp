@@ -1,8 +1,30 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useState, useEffect } from "react";
+import { get } from "../services/api";
 
 export default function Profile() {
   const { user } = useAuth();
+  const [addresses, setAddresses] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      const load = async () => {
+        try {
+          setLoading(true);
+          const a = await get("/api/addresses");
+          setAddresses(a.data || []);
+        } catch (error) {
+          console.error("Failed to fetch addresses:", error);
+          setAddresses([]);
+        } finally {
+          setLoading(false);
+        }
+      };
+      load();
+    }
+  }, [user]);
 
   if (!user) {
     return (
@@ -24,6 +46,9 @@ export default function Profile() {
       </div>
     );
   }
+
+  // Assuming we display the first address if available, or "Not provided"
+  const address = addresses.length > 0 ? addresses[0] : null;
 
   return (
     <div className="container my-5">
@@ -72,7 +97,15 @@ export default function Profile() {
                     <div>
                       <small className="text-muted d-block">Address</small>
                       <strong className="fs-5">
-                        {user.address || "Not provided"}
+                        {loading
+                          ? "Loading..."
+                          : address
+                          ? `${address.line1}${
+                              address.line2 ? ", " + address.line2 : ""
+                            }, ${address.city}, ${address.state} ${
+                              address.zip
+                            } • ${address.phone}`
+                          : "Not provided"}
                       </strong>
                     </div>
                   </div>
