@@ -25,20 +25,18 @@ export const createOrder = async (req, res) => {
       address: addressId,
       totalAmount,
       status: "Placed",
-      paymentStatus: "Pending",
+      paymentStatus: "Successfull",
     });
 
     // clear cart
     cart.items = [];
     await cart.save();
 
-    res
-      .status(201)
-      .json({
-        success: true,
-        data: order,
-        message: "Order placed successfully",
-      });
+    res.status(201).json({
+      success: true,
+      data: order,
+      message: "Order placed successfully",
+    });
   } catch (err) {
     res.status(500).json({ success: false, message: "Server error" });
   }

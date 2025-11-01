@@ -180,7 +180,15 @@ export default function Checkout({ showToast }) {
           <div className="card p-3">
             <h6>Order Summary</h6>
             <div className="small text-muted mb-2">
-              {cart.items.length} items
+              {/* Updated: Show product names instead of item count */}
+              {cart.items.length > 0
+                ? cart.items.map((item, index) => (
+                    <span key={item.product._id}>
+                      {item.product.name}
+                      {index < cart.items.length - 1 ? ", " : ""}
+                    </span>
+                  ))
+                : "No items"}
             </div>
             <button className="btn btn-primary w-100" onClick={placeOrder}>
               Checkout
