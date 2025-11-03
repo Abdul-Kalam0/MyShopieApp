@@ -6,10 +6,12 @@ import { Footer } from "../components/Footer.jsx";
 
 export default function Cart({ showToast }) {
   const [cart, setCart] = useState(null);
+
   const load = async () => {
     const r = await get("/api/cart");
     setCart(r.data || { items: [] });
   };
+
   useEffect(() => {
     load();
   }, []);
@@ -21,11 +23,13 @@ export default function Cart({ showToast }) {
     showToast("info", "Updated quantity");
     load();
   };
+
   const remove = async (pid, size) => {
     await del("/api/cart", { productId: pid, size });
     showToast("danger", "Removed from cart");
     load();
   };
+
   const moveToWishlist = async (pid, size) => {
     await post("/api/wishlist", { productId: pid });
     await del("/api/cart", { productId: pid, size });
@@ -54,32 +58,35 @@ export default function Cart({ showToast }) {
       <div className="row g-4">
         <div className="col-lg-8">
           {cart.items.map((it, idx) => (
-            <div className="card mb-3" key={idx}>
+            <div className="card mb-3 p-2" key={idx}>
               <div className="row g-0">
-                <div className="col-md-3 d-flex align-items-center">
+                <div className="col-4 col-md-3 d-flex align-items-center">
                   <img
                     className="img-fluid rounded-start"
                     src={it.product?.imageUrl}
                     alt=""
                   />
                 </div>
-                <div className="col-md-9">
+
+                <div className="col-8 col-md-9">
                   <div className="card-body">
                     <h6 className="card-title">{it.product?.name}</h6>
+
                     <div className="mb-2">
                       <strong>₹{it.product?.price}</strong>{" "}
                       <span className="text-muted text-decoration-line-through">
                         ₹{it.product?.originalPrice}
                       </span>
                     </div>
+
+                    <div className="mb-2 text-muted">Size: {it.size}</div>
+
+                    {/* ✅ Quantity FULL WIDTH on mobile */}
                     <div className="mb-2">
-                      <span className="text-muted">Size: {it.size}</span>
-                    </div>
-                    <div className="d-flex align-items-center gap-2">
-                      <span className="text-muted">Quantity:</span>
+                      <span className="text-muted me-2">Quantity:</span>
                       <div
                         className="input-group"
-                        style={{ maxWidth: "140px" }}
+                        style={{ maxWidth: "150px" }}
                       >
                         <button
                           className="btn btn-outline-secondary"
@@ -113,14 +120,36 @@ export default function Cart({ showToast }) {
                           +
                         </button>
                       </div>
+                    </div>
+
+                    {/* ✅ DESKTOP BUTTONS */}
+                    <div className="d-none d-md-flex gap-2 mt-2">
                       <button
-                        className="btn btn-outline-danger ms-auto"
+                        className="btn btn-outline-danger"
                         onClick={() => remove(it.product._id, it.size)}
                       >
                         Remove
                       </button>
+
                       <button
                         className="btn btn-outline-secondary"
+                        onClick={() => moveToWishlist(it.product._id, it.size)}
+                      >
+                        Move to Wishlist
+                      </button>
+                    </div>
+
+                    {/* ✅ MOBILE FULL WIDTH BUTTONS */}
+                    <div className="d-flex d-md-none flex-column gap-2 mt-3">
+                      <button
+                        className="btn btn-outline-danger w-100"
+                        onClick={() => remove(it.product._id, it.size)}
+                      >
+                        Remove
+                      </button>
+
+                      <button
+                        className="btn btn-outline-dark w-100"
                         onClick={() => moveToWishlist(it.product._id, it.size)}
                       >
                         Move to Wishlist
@@ -132,6 +161,7 @@ export default function Cart({ showToast }) {
             </div>
           ))}
         </div>
+
         <div className="col-lg-4">
           <div className="card p-3">
             <h6>Price Details</h6>
