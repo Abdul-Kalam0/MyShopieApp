@@ -22,14 +22,14 @@ export default function Navbar({ onSearch }) {
 
   return (
     <nav className="navbar navbar-light bg-white sticky-header shadow-sm">
-      {/* Changed to full width on all screens by removing container classes and using w-100 with padding */}
+      {/* ✅ Full width navbar container */}
       <div className="d-flex align-items-center justify-content-between py-2 px-3 w-100">
         {/* Logo */}
         <Link to="/" className="navbar-brand fw-bold fs-4">
           Shopie — Fashion Store
         </Link>
 
-        {/* Search bar desktop */}
+        {/* Desktop search */}
         <form
           className="d-none d-md-flex flex-fill mx-4"
           onSubmit={handleSubmit}
@@ -43,7 +43,7 @@ export default function Navbar({ onSearch }) {
           />
         </form>
 
-        {/* Desktop buttons */}
+        {/* Desktop actions */}
         <div className="d-none d-md-flex align-items-center gap-3">
           {!user ? (
             <>
@@ -70,9 +70,7 @@ export default function Navbar({ onSearch }) {
                   height: "34px",
                   fontSize: "16px",
                   fontWeight: "600",
-                  cursor: "pointer",
                 }}
-                title={user.name}
               >
                 {user.name?.charAt(0).toUpperCase()}
               </NavLink>
@@ -100,7 +98,7 @@ export default function Navbar({ onSearch }) {
           </NavLink>
         </div>
 
-        {/* Mobile hamburger */}
+        {/* Mobile menu toggle */}
         <button
           className="btn d-md-none"
           onClick={() => setShowMenu(!showMenu)}
@@ -109,13 +107,13 @@ export default function Navbar({ onSearch }) {
         </button>
       </div>
 
-      {/* Mobile dropdown - already full width */}
+      {/* ✅ Mobile full-width dropdown */}
       {showMenu && (
-        <div className="bg-white shadow-sm border-top py-3 px-3 d-md-none">
-          {/* Mobile search */}
-          <form onSubmit={handleSubmit}>
+        <div className="bg-white w-100 shadow-sm border-top py-3 px-3 d-md-none">
+          {/* ✅ Full width search */}
+          <form className="w-100" onSubmit={handleSubmit}>
             <input
-              className="form-control mb-3"
+              className="form-control mb-3 w-100"
               type="search"
               placeholder="Search for products"
               value={q}
@@ -140,9 +138,9 @@ export default function Navbar({ onSearch }) {
             </>
           ) : (
             <>
-              {/* ✅ Mobile Profile Avatar — Click works */}
+              {/* Profile */}
               <div
-                className="d-flex align-items-center mb-3"
+                className="d-flex align-items-center mb-3 w-100"
                 role="button"
                 onClick={() => navigate("/profile")}
               >
@@ -166,11 +164,11 @@ export default function Navbar({ onSearch }) {
             </>
           )}
 
-          {/* Mobile Wishlist / Cart */}
-          <div className="d-flex justify-content-between">
+          {/* ✅ Cart & Wishlist full width */}
+          <div className="d-flex w-100 gap-2">
             <NavLink
               to="/wishlist"
-              className="btn btn-light position-relative w-50 me-2"
+              className="btn btn-light w-50 position-relative"
             >
               <i className="bi bi-heart fs-5"></i>
               <span className="badge bg-danger ms-1">{wishCount}</span>
@@ -178,7 +176,7 @@ export default function Navbar({ onSearch }) {
 
             <NavLink
               to="/cart"
-              className="btn btn-light position-relative w-50"
+              className="btn btn-light w-50 position-relative"
             >
               <i className="bi bi-cart fs-5"></i>
               <span className="badge bg-danger ms-1">{cartCount}</span>
