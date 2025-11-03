@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { get, post, put, del } from "../services/api";
 import Loader from "../components/Loader.jsx";
 import { Link } from "react-router-dom";
+import { Footer } from "../components/Footer.jsx";
 
 export default function Cart({ showToast }) {
   const [cart, setCart] = useState(null);
@@ -157,6 +158,8 @@ export default function Cart({ showToast }) {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

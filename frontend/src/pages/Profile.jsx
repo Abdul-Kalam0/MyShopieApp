@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useState, useEffect } from "react";
 import { get } from "../services/api";
+import { Footer } from "../components/Footer.jsx";
 
 export default function Profile() {
   const { user } = useAuth();
@@ -123,6 +124,8 @@ export default function Profile() {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

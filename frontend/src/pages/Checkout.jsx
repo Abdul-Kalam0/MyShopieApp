@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { get, post, put, del } from "../services/api";
 import Loader from "../components/Loader.jsx";
 import { useNavigate } from "react-router-dom";
+import { Footer } from "../components/Footer.jsx";
 
 export default function Checkout({ showToast }) {
   const [addresses, setAddresses] = useState(null);
@@ -211,6 +212,7 @@ export default function Checkout({ showToast }) {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

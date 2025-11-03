@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { post } from "../services/api";
 import { useNavigate, Link } from "react-router-dom";
+import { Footer } from "../components/Footer.jsx";
 
 export default function Register({ showToast }) {
   const navigate = useNavigate();
@@ -90,6 +91,8 @@ export default function Register({ showToast }) {
       <p className="text-center mt-3">
         Already have an account? <Link to="/login">Login</Link>
       </p>
+
+      <Footer />
     </div>
   );
 }

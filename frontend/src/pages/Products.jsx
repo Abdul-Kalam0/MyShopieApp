@@ -4,6 +4,7 @@ import { get } from "../services/api";
 import ProductCard from "../components/ProductCard.jsx";
 import FiltersSidebar from "../components/FiltersSidebar.jsx";
 import Loader from "../components/Loader.jsx";
+import { Footer } from "../components/Footer.jsx";
 
 function useQuery() {
   const { search } = useLocation();
@@ -113,6 +114,7 @@ export default function Products({ showToast }) {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

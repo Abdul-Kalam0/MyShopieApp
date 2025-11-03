@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { get, post, del } from "../services/api";
 import Loader from "../components/Loader.jsx";
+import { Footer } from "../components/Footer.jsx";
 
 export default function Wishlist({ showToast }) {
   const [data, setData] = useState(null);
@@ -109,6 +110,8 @@ export default function Wishlist({ showToast }) {
           </div>
         ))}
       </div>
+
+      <Footer />
     </div>
   );
 }

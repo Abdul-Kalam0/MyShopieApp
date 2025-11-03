@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { get } from "../services/api";
 import Loader from "../components/Loader.jsx";
+import { Footer } from "../components/Footer.jsx";
 
 export default function Orders() {
   const [orders, setOrders] = useState(null);
@@ -38,6 +39,8 @@ export default function Orders() {
       ))}
 
       {!orders.length && <div className="text-muted">No orders yet.</div>}
+
+      <Footer />
     </div>
   );
 }

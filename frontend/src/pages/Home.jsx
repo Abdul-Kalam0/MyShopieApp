@@ -1,6 +1,7 @@
 // src/pages/Home.jsx
 
 import { useNavigate } from "react-router-dom";
+import { Footer } from "../components/Footer.jsx";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -150,6 +151,8 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

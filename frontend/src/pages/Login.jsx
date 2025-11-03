@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { Footer } from "../components/Footer.jsx";
 
 export default function Login({ showToast }) {
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ export default function Login({ showToast }) {
       <p className="text-center mt-3">
         Don't have an account? <Link to="/register">Register</Link>
       </p>
+      <Footer />
     </div>
   );
 }

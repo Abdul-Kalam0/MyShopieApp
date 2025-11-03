@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { get, post } from "../services/api";
 import Loader from "../components/Loader.jsx";
 import useToast from "../hooks/useToast";
+import { Footer } from "../components/Footer.jsx";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -327,6 +328,8 @@ export default function ProductDetails() {
           </div>
         </div>
       )}
+
+      <Footer />
     </div>
   );
 }
