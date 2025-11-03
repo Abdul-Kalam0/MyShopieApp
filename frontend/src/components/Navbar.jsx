@@ -22,7 +22,8 @@ export default function Navbar({ onSearch }) {
 
   return (
     <nav className="navbar navbar-light bg-white sticky-header shadow-sm">
-      <div className="container container-narrow d-flex align-items-center justify-content-between py-2">
+      {/* Changed to full width on all screens by removing container classes and using w-100 with padding */}
+      <div className="d-flex align-items-center justify-content-between py-2 px-3 w-100">
         {/* Logo */}
         <Link to="/" className="navbar-brand fw-bold fs-4">
           Shopie — Fashion Store
@@ -108,7 +109,7 @@ export default function Navbar({ onSearch }) {
         </button>
       </div>
 
-      {/* Mobile dropdown */}
+      {/* Mobile dropdown - already full width */}
       {showMenu && (
         <div className="bg-white shadow-sm border-top py-3 px-3 d-md-none">
           {/* Mobile search */}
