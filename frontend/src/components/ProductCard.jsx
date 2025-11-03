@@ -26,8 +26,8 @@ export default function ProductCard({
       onAddedCart?.(p);
       window.dispatchEvent(new Event("cart-updated"));
       showToast("success", "Added to Cart!");
-    } catch (err) {
-      showToast("danger", "Failed to add to cart. Please try again.");
+    } catch {
+      showToast("danger", "Failed to add to cart");
     } finally {
       setBusy(false);
     }
@@ -48,34 +48,25 @@ export default function ProductCard({
       onAddedWishlist?.(p);
       window.dispatchEvent(new Event("wishlist-updated"));
       showToast("success", "Added to Wishlist!");
-    } catch (err) {
-      showToast("danger", "Failed to add to wishlist. Please try again.");
+    } catch {
+      showToast("danger", "Failed to add to wishlist");
     } finally {
       setBusy(false);
     }
   };
 
   return (
-    <div
-      className="card h-100 position-relative shadow-sm"
-      style={{ transition: "box-shadow 0.2s ease" }}
-      onMouseEnter={(e) =>
-        (e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)")
-      }
-      onMouseLeave={(e) =>
-        (e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.1)")
-      }
-    >
+    <div className="card h-100 shadow-sm">
       {p.discountPercent && (
         <span className="badge bg-danger position-absolute top-0 start-0 m-2">
           {p.discountPercent}% off
         </span>
       )}
 
-      <Link className="text-decoration-none text-dark" to={`/product/${p._id}`}>
+      <Link to={`/product/${p._id}`} className="text-decoration-none text-dark">
         <img
-          className="card-img-top img-fluid"
           src={p.imageUrl}
+          className="card-img-top"
           alt={p.name}
           style={{ height: "200px", objectFit: "cover" }}
         />
@@ -86,11 +77,11 @@ export default function ProductCard({
           className="text-decoration-none text-dark"
           to={`/product/${p._id}`}
         >
-          <h6 className="card-title fw-semibold">{p.name}</h6>
+          <h6 className="fw-semibold">{p.name}</h6>
         </Link>
 
         <div className="mb-2">
-          <strong className="text-primary">₹{p.price}</strong>{" "}
+          <span className="fw-bold text-primary">₹{p.price}</span>{" "}
           {p.originalPrice && (
             <span className="text-muted text-decoration-line-through small">
               ₹{p.originalPrice}
@@ -98,29 +89,21 @@ export default function ProductCard({
           )}
         </div>
 
-        <div className="text-warning mb-3">
+        <div className="text-warning mb-2">
           {"★".repeat(Math.round(p.rating || 0))}
           <span className="text-muted small ms-1">({p.numReviews || 0})</span>
         </div>
 
-        {/* SIZE BUTTONS */}
-        <div className="mb-3">
-          <label className="form-label small fw-semibold mb-2">Size:</label>
-          <div className="d-flex gap-2 flex-wrap">
+        {/* Sizes */}
+        <div className="mb-2">
+          <label className="small fw-semibold mb-1">Size:</label>
+          <div className="d-flex flex-wrap gap-2">
             {(p.sizes || ["S", "M", "L", "XL"]).map((s) => (
               <button
                 key={s}
-                type="button"
-                className={`btn btn-sm border ${
-                  selectedSize === s
-                    ? "btn-dark text-white shadow-sm"
-                    : "btn-outline-secondary"
+                className={`btn btn-sm ${
+                  selectedSize === s ? "btn-dark" : "btn-outline-secondary"
                 }`}
-                style={{
-                  minWidth: "45px",
-                  borderRadius: "6px",
-                  fontWeight: "500",
-                }}
                 onClick={() => setSelectedSize(s)}
               >
                 {s}
@@ -129,10 +112,11 @@ export default function ProductCard({
           </div>
         </div>
 
-        <div className="mt-auto d-flex gap-2">
+        {/* ✅ Buttons stacked (Add → Wishlist) */}
+        <div className="mt-auto d-flex flex-column gap-2">
           <button
             disabled={busy}
-            className="btn btn-primary flex-fill"
+            className="btn btn-primary w-100"
             onClick={addCart}
           >
             {busy ? "Adding..." : "Add to Cart"}
@@ -140,10 +124,10 @@ export default function ProductCard({
 
           <button
             disabled={busy}
-            className="btn btn-outline-secondary"
+            className="btn btn-outline-secondary w-100"
             onClick={addWish}
           >
-            <i className="bi bi-heart text-danger"></i>
+            <i className="bi bi-heart text-danger me-2"></i> Move to Wishlist
           </button>
         </div>
       </div>
