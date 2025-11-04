@@ -138,50 +138,55 @@ export default function Navbar({ onSearch }) {
             </>
           ) : (
             <>
-              {/* Profile */}
-              <div
-                className="d-flex align-items-center mb-3 w-100"
-                role="button"
-                onClick={() => navigate("/profile")}
-              >
-                <div
-                  className="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center"
-                  style={{
-                    width: "38px",
-                    height: "38px",
-                    fontSize: "17px",
-                    fontWeight: "600",
-                  }}
+              {/* ✅ Cart & Wishlist in same row first */}
+              <div className="d-flex w-100 gap-2 mb-3">
+                <NavLink
+                  to="/wishlist"
+                  className="btn btn-light w-50 position-relative"
                 >
-                  {user.name?.charAt(0).toUpperCase()}
-                </div>
-                <span className="ms-2 fw-semibold">{user.name}</span>
+                  <i className="bi bi-heart fs-5"></i>
+                  <span className="badge bg-danger ms-1">{wishCount}</span>
+                </NavLink>
+
+                <NavLink
+                  to="/cart"
+                  className="btn btn-light w-50 position-relative"
+                >
+                  <i className="bi bi-cart fs-5"></i>
+                  <span className="badge bg-danger ms-1">{cartCount}</span>
+                </NavLink>
               </div>
 
-              <button className="btn btn-danger w-100 mb-3" onClick={logout}>
-                Logout
-              </button>
+              {/* ✅ Profile and Logout in next row, side by side */}
+              <div className="d-flex w-100 gap-2 align-items-center">
+                <div
+                  className="d-flex align-items-center flex-fill"
+                  role="button"
+                  onClick={() => navigate("/profile")}
+                >
+                  <div
+                    className="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center"
+                    style={{
+                      width: "38px",
+                      height: "38px",
+                      fontSize: "17px",
+                      fontWeight: "600",
+                    }}
+                  >
+                    {user.name?.charAt(0).toUpperCase()}
+                  </div>
+                  <span className="ms-2 fw-semibold">{user.name}</span>
+                </div>
+
+                <button
+                  className="btn btn-danger btn-sm flex-shrink-0"
+                  onClick={logout}
+                >
+                  Logout
+                </button>
+              </div>
             </>
           )}
-
-          {/* ✅ Cart & Wishlist full width */}
-          <div className="d-flex w-100 gap-2">
-            <NavLink
-              to="/wishlist"
-              className="btn btn-light w-50 position-relative"
-            >
-              <i className="bi bi-heart fs-5"></i>
-              <span className="badge bg-danger ms-1">{wishCount}</span>
-            </NavLink>
-
-            <NavLink
-              to="/cart"
-              className="btn btn-light w-50 position-relative"
-            >
-              <i className="bi bi-cart fs-5"></i>
-              <span className="badge bg-danger ms-1">{cartCount}</span>
-            </NavLink>
-          </div>
         </div>
       )}
     </nav>

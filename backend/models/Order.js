@@ -17,7 +17,7 @@ const orderSchema = new mongoose.Schema(
     address: { type: mongoose.Schema.Types.ObjectId, ref: "Address" },
     totalAmount: Number,
     status: { type: String, default: "Placed" },
-    paymentStatus: { type: String, default: "Pending" },
+    paymentStatus: { type: String, default: "Success" },
   },
   { timestamps: true }
 );
