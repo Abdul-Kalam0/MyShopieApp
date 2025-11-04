@@ -41,9 +41,7 @@ export default function ProductDetails() {
   if (!p) return <Loader />;
 
   const addToCart = async () => {
-    console.log("addToCart called, size:", size); // Debugging log
     if (!size) {
-      console.log("No size selected, showing toast"); // Debugging log
       showToast("warning", "Please choose a size");
       return;
     }
@@ -78,6 +76,17 @@ export default function ProductDetails() {
 
   return (
     <div className="container my-5">
+      {/* Back Button + Title */}
+      <div className="d-flex align-items-center gap-2 mb-4">
+        <button
+          className="btn p-0 border-0 bg-transparent"
+          onClick={() => navigate(-1)}
+        >
+          <i className="bi bi-arrow-left fs-4"></i>
+        </button>
+        <h4 className="fw-bold m-0">Product Details</h4>
+      </div>
+
       <div className="row g-4">
         {/* PRODUCT IMAGE */}
         <div className="col-md-6 text-center">
@@ -123,18 +132,8 @@ export default function ProductDetails() {
                         ? "btn-dark text-white shadow"
                         : "btn-outline-secondary"
                     }`}
-                    style={{
-                      minWidth: "50px",
-                      borderRadius: "8px",
-                      transition: "all 0.2s ease",
-                    }}
+                    style={{ minWidth: "50px", borderRadius: "8px" }}
                     onClick={() => setSize(s)}
-                    onMouseEnter={(e) =>
-                      (e.target.style.transform = "scale(1.05)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.target.style.transform = "scale(1)")
-                    }
                   >
                     {s}
                   </button>
@@ -176,16 +175,18 @@ export default function ProductDetails() {
               >
                 Add to Cart
               </button>
+
+              {/* ✅ Wishlist button same size */}
               <button
-                className="btn btn-light border px-3 py-2"
+                className="btn btn-outline-danger px-4 py-2 fw-semibold d-flex align-items-center gap-2"
                 onClick={addToWish}
-                title="Add to Wishlist"
               >
-                <i className="bi bi-heart text-danger fs-5"></i>
+                <i className="bi bi-heart-fill"></i>
+                Wishlist
               </button>
             </div>
 
-            {/* ICON BENEFITS */}
+            {/* BENEFITS */}
             <div className="d-flex gap-4 text-muted small mb-4 flex-wrap">
               <div className="d-flex align-items-center">
                 <i className="bi bi-arrow-repeat me-2 text-success"></i>
@@ -211,33 +212,15 @@ export default function ProductDetails() {
         </div>
       </div>
 
-      {/* RELATED PRODUCTS (Same Category) */}
+      {/* RELATED PRODUCTS */}
       <div className="mt-5">
         <h5 className="fw-bold text-dark mb-4">More items you may like</h5>
         {relatedProducts.length > 0 ? (
           <div className="row g-3">
             {relatedProducts.map((r) => (
               <div className="col-6 col-md-4 col-lg-3" key={r._id}>
-                <div
-                  className="card border-0 shadow-sm h-100"
-                  style={{
-                    transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateY(-5px)";
-                    e.currentTarget.style.boxShadow =
-                      "0 8px 16px rgba(0,0,0,0.2)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow =
-                      "0 2px 8px rgba(0,0,0,0.1)";
-                  }}
-                >
-                  <Link
-                    to={`/product/${r._id}`}
-                    className="text-decoration-none"
-                  >
+                <div className="card border-0 shadow-sm h-100">
+                  <Link to={`/product/${r._id}`}>
                     <img
                       src={r.imageUrl}
                       className="card-img-top img-fluid"
@@ -270,7 +253,7 @@ export default function ProductDetails() {
         )}
       </div>
 
-      {/* TOAST NOTIFICATION - Simplified for testing */}
+      {/* Toast */}
       {toast && (
         <div
           style={{
@@ -287,9 +270,7 @@ export default function ProductDetails() {
             padding: "10px 20px",
             borderRadius: "5px",
             zIndex: 9999,
-            boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
           }}
-          role="alert"
         >
           <div style={{ display: "flex", alignItems: "center" }}>
             <span style={{ flex: 1 }}>{toast.message}</span>
@@ -301,9 +282,7 @@ export default function ProductDetails() {
                 color: "white",
                 fontSize: "20px",
                 cursor: "pointer",
-                marginLeft: "10px",
               }}
-              aria-label="Close"
             >
               ×
             </button>
