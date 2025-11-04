@@ -112,9 +112,8 @@ export default function ProductCard({
           </div>
         </div>
 
-        {/* ✅ Buttons */}
+        {/* Buttons */}
         <div className="mt-auto d-flex flex-column gap-2">
-          {/* Add to Cart */}
           <button
             disabled={busy}
             className="btn btn-primary w-100"
@@ -123,23 +122,31 @@ export default function ProductCard({
             {busy ? "Adding..." : "Add to Cart"}
           </button>
 
-          {/* ✅ Wishlist Button — matches your screenshot */}
+          {/* ✅ Light Wishlist Button */}
           <button
             disabled={busy}
             onClick={addWish}
             className="btn w-100"
             style={{
-              border: "2px solid #d9534f",
-              color: "#d9534f",
+              border: "1.5px solid #e57373",
+              color: "#e57373",
               borderRadius: "10px",
-              fontWeight: "600",
+              fontWeight: "500",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               gap: "6px",
+              background: "transparent",
             }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#fff5f5")}
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.background = "transparent")
+            }
           >
-            <i className="bi bi-heart-fill" style={{ color: "#d9534f" }}></i>
+            <i
+              className="bi bi-heart-fill"
+              style={{ color: "#e57373", fontSize: "1rem" }}
+            ></i>
             Wishlist
           </button>
         </div>
