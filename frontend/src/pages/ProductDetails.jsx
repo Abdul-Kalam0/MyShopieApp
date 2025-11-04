@@ -59,15 +59,6 @@ export default function ProductDetails() {
     }
   };
 
-  const buyNow = async () => {
-    if (!size) {
-      showToast("warning", "Please select a size");
-      return;
-    }
-    await addToCart();
-    navigate("/checkout");
-  };
-
   const addToWish = async () => {
     if (!size) {
       showToast("warning", "Select size first");
@@ -179,15 +170,6 @@ export default function ProductDetails() {
 
             {/* ACTION BUTTONS */}
             <div className="d-flex gap-3 mb-4 flex-wrap">
-              <button
-                className="btn btn-primary px-4 py-2 fw-semibold shadow"
-                onClick={buyNow}
-                style={{ transition: "all 0.2s ease" }}
-                onMouseEnter={(e) => (e.target.style.transform = "scale(1.02)")}
-                onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
-              >
-                Buy Now
-              </button>
               <button
                 className="btn btn-outline-primary px-4 py-2 fw-semibold"
                 onClick={addToCart}
