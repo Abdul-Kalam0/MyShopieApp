@@ -54,7 +54,7 @@ export default function Cart({ showToast }) {
 
   return (
     <div className="container container-narrow my-4">
-      <h5 className="text-center mb-4">My Cart ({cart.items.length})</h5>
+      <h5 className="text-center mb-4">My Cart</h5>
       <div className="row g-4">
         <div className="col-lg-8">
           {cart.items.map((it, idx) => (

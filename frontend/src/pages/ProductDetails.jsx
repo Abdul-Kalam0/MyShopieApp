@@ -82,7 +82,7 @@ export default function ProductDetails() {
           className="btn p-0 border-0 bg-transparent"
           onClick={() => navigate(-1)}
         >
-          <i className="bi bi-arrow-left fs-4"></i>
+          <i className="bi bi-arrow-left fs-4 text-primary"></i>
         </button>
         <h4 className="fw-bold m-0">Product Details</h4>
       </div>
