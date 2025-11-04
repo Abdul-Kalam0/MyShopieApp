@@ -138,7 +138,7 @@ export default function Navbar({ onSearch }) {
             </>
           ) : (
             <>
-              {/* ✅ All in single line: Profile, Logout, Wishlist, Cart as circular elements */}
+              {/* ✅ All in single line: Profile, Wishlist, Cart, Logout as circular elements */}
               <div className="d-flex justify-content-around align-items-center w-100 mb-3">
                 {/* Profile */}
                 <NavLink
@@ -155,20 +155,6 @@ export default function Navbar({ onSearch }) {
                 >
                   {user.name?.charAt(0).toUpperCase()}
                 </NavLink>
-
-                {/* Logout */}
-                <button
-                  className="btn btn-danger rounded-circle d-flex align-items-center justify-content-center"
-                  style={{
-                    width: "50px",
-                    height: "50px",
-                    fontSize: "18px",
-                  }}
-                  onClick={logout}
-                  title="Logout"
-                >
-                  <i className="bi bi-box-arrow-right"></i>
-                </button>
 
                 {/* Wishlist */}
                 <NavLink
@@ -203,6 +189,20 @@ export default function Navbar({ onSearch }) {
                     {cartCount}
                   </span>
                 </NavLink>
+
+                {/* Logout */}
+                <button
+                  className="btn btn-danger rounded-circle d-flex align-items-center justify-content-center"
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    fontSize: "18px",
+                  }}
+                  onClick={logout}
+                  title="Logout"
+                >
+                  <i className="bi bi-box-arrow-right"></i>
+                </button>
               </div>
             </>
           )}

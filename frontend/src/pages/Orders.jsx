@@ -41,7 +41,7 @@ export default function Orders() {
             className={`${getStatusBadge(o.status)} mb-2`}
             style={{ width: "fit-content" }}
           >
-            {o.status} / {o.paymentStatus}
+            {o.status}
           </span>
 
           {/* Order Items */}
