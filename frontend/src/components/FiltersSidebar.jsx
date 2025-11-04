@@ -12,57 +12,50 @@ export default function FiltersSidebar({ applied, onChange, onClear }) {
   };
 
   return (
-    <div className="filters-col">
-      <div className="d-flex justify-content-between align-items-center mb-2">
-        <h6 className="mb-0">Filters</h6>
-        <button className="btn btn-link" onClick={onClear}>
-          Clear
+    <div
+      className="p-3 rounded shadow-sm bg-white"
+      style={{ border: "1px solid #e5e5e5", minWidth: "240px" }}
+    >
+      {/* Header */}
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h5 className="fw-bold m-0">Filters</h5>
+
+        <button
+          className="btn btn-sm text-danger fw-semibold"
+          onClick={onClear}
+          style={{ fontSize: "0.85rem" }}
+        >
+          Clear ✕
         </button>
       </div>
 
-      {/* Price Range Options */}
-      <div className="mb-3">
-        <div className="form-label">Price Range</div>
-        <div className="form-check">
-          <input
-            className="form-check-input"
-            type="radio"
-            name="priceRange"
-            id="under500"
-            checked={local.maxPrice === 500 && !local.minPrice}
-            onChange={() => update({ maxPrice: 500, minPrice: undefined })}
-          />
-          <label className="form-check-label" htmlFor="under500">
-            Under ₹500
-          </label>
-        </div>
-        <div className="form-check">
-          <input
-            className="form-check-input"
-            type="radio"
-            name="priceRange"
-            id="under1000"
-            checked={local.maxPrice === 1000 && !local.minPrice}
-            onChange={() => update({ maxPrice: 1000, minPrice: undefined })}
-          />
-          <label className="form-check-label" htmlFor="under1000">
-            Under ₹1000
-          </label>
-        </div>
-        <div className="form-check">
-          <input
-            className="form-check-input"
-            type="radio"
-            name="priceRange"
-            id="under2000"
-            checked={local.maxPrice === 2000 && !local.minPrice}
-            onChange={() => update({ maxPrice: 2000, minPrice: undefined })}
-          />
-          <label className="form-check-label" htmlFor="under2000">
-            Under ₹2000
-          </label>
-        </div>
-        <div className="form-check">
+      {/* Price Range */}
+      <div className="mb-4">
+        <h6 className="fw-semibold mb-2">Price</h6>
+
+        {[
+          { id: "under500", label: "Under ₹500", val: 500 },
+          { id: "under1000", label: "Under ₹1000", val: 1000 },
+          { id: "under2000", label: "Under ₹2000", val: 2000 },
+        ].map((item) => (
+          <div className="form-check mb-1" key={item.id}>
+            <input
+              className="form-check-input"
+              type="radio"
+              name="priceRange"
+              id={item.id}
+              checked={local.maxPrice === item.val && !local.minPrice}
+              onChange={() =>
+                update({ maxPrice: item.val, minPrice: undefined })
+              }
+            />
+            <label className="form-check-label" htmlFor={item.id}>
+              {item.label}
+            </label>
+          </div>
+        ))}
+
+        <div className="form-check mt-1">
           <input
             className="form-check-input"
             type="radio"
@@ -77,10 +70,12 @@ export default function FiltersSidebar({ applied, onChange, onClear }) {
         </div>
       </div>
 
-      <div className="mb-3">
-        <div className="form-label">Category</div>
+      {/* Category */}
+      <div className="mb-4">
+        <h6 className="fw-semibold mb-2">Category</h6>
+
         {(local.categoriesList || []).map((c) => (
-          <div className="form-check" key={c}>
+          <div className="form-check mb-1" key={c}>
             <input
               className="form-check-input"
               type="checkbox"
@@ -92,15 +87,20 @@ export default function FiltersSidebar({ applied, onChange, onClear }) {
                 update({ category: Array.from(set) });
               }}
             />
-            <label className="form-check-label" htmlFor={`c-${c}`}>
+            <label
+              className="form-check-label text-capitalize"
+              htmlFor={`c-${c}`}
+            >
               {c}
             </label>
           </div>
         ))}
       </div>
 
-      <div className="mb-3">
-        <div className="form-label">Rating</div>
+      {/* Rating */}
+      <div className="mb-4">
+        <h6 className="fw-semibold mb-2">Minimum Rating</h6>
+
         <input
           type="range"
           className="form-range"
@@ -110,12 +110,17 @@ export default function FiltersSidebar({ applied, onChange, onClear }) {
           value={local.minRating || 0}
           onChange={(e) => update({ minRating: Number(e.target.value) })}
         />
-        <div className="small text-muted">{local.minRating || 0}+ stars</div>
+
+        <div className="badge bg-light text-dark fw-semibold">
+          ⭐ {local.minRating || 0}+
+        </div>
       </div>
 
-      <div className="mb-3">
-        <div className="form-label">Sort by Price</div>
-        <div className="form-check">
+      {/* Sort */}
+      <div className="mb-2">
+        <h6 className="fw-semibold mb-2">Sort by</h6>
+
+        <div className="form-check mb-1">
           <input
             className="form-check-input"
             type="radio"
@@ -125,10 +130,11 @@ export default function FiltersSidebar({ applied, onChange, onClear }) {
             onChange={() => update({ sort: "asc" })}
           />
           <label className="form-check-label" htmlFor="sort-asc">
-            Low to High
+            Price: Low → High
           </label>
         </div>
-        <div className="form-check">
+
+        <div className="form-check mb-1">
           <input
             className="form-check-input"
             type="radio"
@@ -138,7 +144,7 @@ export default function FiltersSidebar({ applied, onChange, onClear }) {
             onChange={() => update({ sort: "desc" })}
           />
           <label className="form-check-label" htmlFor="sort-desc">
-            High to Low
+            Price: High → Low
           </label>
         </div>
       </div>
