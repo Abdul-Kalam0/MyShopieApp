@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { get } from "../services/api";
 import Loader from "../components/Loader.jsx";
 import { Footer } from "../components/Footer.jsx";
+import { useNavigate } from "react-router-dom"; // Added for back navigation
 
 export default function Orders() {
   const [orders, setOrders] = useState(null);
+  const navigate = useNavigate(); // Added for back navigation
 
   useEffect(() => {
     get("/api/orders").then((r) => setOrders(r.data || []));
@@ -21,7 +23,17 @@ export default function Orders() {
 
   return (
     <div className="container container-narrow my-4">
-      <h5 className="fw-bold mb-3">Order History</h5>
+      {/* Modified: Back button and Order History title in same row */}
+      <div className="d-flex align-items-center mb-3">
+        <button
+          className="btn btn-link p-0 me-2"
+          onClick={() => navigate(-1)}
+          title="Go Back"
+        >
+          <i className="bi bi-arrow-left fs-4"></i>
+        </button>
+        <h5 className="fw-bold mb-0">Order History</h5>
+      </div>
 
       {orders.map((o) => (
         <div className="card p-3 mb-3 shadow-sm border-0 rounded-3" key={o._id}>
