@@ -44,7 +44,6 @@ export default function Checkout({ showToast }) {
   ];
 
   const addAddress = async () => {
-    // ✅ Validate required fields
     for (let field of requiredFields) {
       if (!form[field].trim()) {
         showToast("danger", `${field.toUpperCase()} is required`);
@@ -52,7 +51,6 @@ export default function Checkout({ showToast }) {
       }
     }
 
-    // ✅ Validate phone number
     if (!/^\d{10}$/.test(form.phone)) {
       showToast("danger", "Phone number must be 10 digits");
       return;
@@ -67,7 +65,6 @@ export default function Checkout({ showToast }) {
       showToast("success", "Address Added");
     }
 
-    // Reset form
     setForm({
       name: "",
       line1: "",
@@ -77,7 +74,6 @@ export default function Checkout({ showToast }) {
       zip: "",
       phone: "",
     });
-
     load();
   };
 
@@ -104,10 +100,22 @@ export default function Checkout({ showToast }) {
 
   return (
     <div className="container container-narrow my-4">
+      {/* ✅ Header with Back button */}
+      <div className="d-flex align-items-center gap-2 mb-3">
+        <button
+          className="btn p-0 border-0 bg-transparent"
+          onClick={() => navigate(-1)}
+        >
+          <i className="bi bi-arrow-left fs-4 text-primary"></i>
+        </button>
+        <h4 className="fw-bold m-0">Checkout</h4>
+      </div>
+
       <div className="row g-4">
         {/* ✅ Address Section */}
         <div className="col-lg-8">
-          <h6>Choose Address</h6>
+          <h6 className="fw-bold">Choose Address</h6>
+
           {(addresses || []).map((a) => (
             <div className="form-check card p-3 mb-2" key={a._id}>
               <input
@@ -118,6 +126,7 @@ export default function Checkout({ showToast }) {
                 checked={selected === a._id}
                 onChange={() => setSelected(a._id)}
               />
+
               <label className="form-check-label" htmlFor={a._id}>
                 <div>
                   <strong>{a.name}</strong> — {a.line1}, {a.city}, {a.state}{" "}
@@ -144,7 +153,10 @@ export default function Checkout({ showToast }) {
 
           {/* ✅ Add / Edit Address Form */}
           <div className="card p-3 mt-3">
-            <h6>{editing ? "Edit Address" : "Add New Address"}</h6>
+            <h6 className="fw-bold">
+              {editing ? "Edit Address" : "Add New Address"}
+            </h6>
+
             <div className="row g-2">
               {Object.keys(form).map((k) => (
                 <div className="col-md-6" key={k}>
@@ -190,7 +202,7 @@ export default function Checkout({ showToast }) {
         {/* ✅ Order Summary */}
         <div className="col-lg-4">
           <div className="card p-3">
-            <h6>Order Summary</h6>
+            <h6 className="fw-bold">Order Summary</h6>
 
             <div className="small text-muted mb-2">
               {cart.items.length > 0 ? (
@@ -212,6 +224,7 @@ export default function Checkout({ showToast }) {
           </div>
         </div>
       </div>
+
       <Footer />
     </div>
   );
