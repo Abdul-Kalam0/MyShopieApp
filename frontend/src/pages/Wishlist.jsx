@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { get, post, del } from "../services/api";
 import Loader from "../components/Loader.jsx";
 import { Footer } from "../components/Footer.jsx";
+import { useNavigate } from "react-router-dom"; // Added for back navigation
 
 export default function Wishlist({ showToast }) {
   const [data, setData] = useState(null);
+  const navigate = useNavigate(); // Added for back navigation
 
   const load = async () => {
     const r = await get("/api/wishlist");
@@ -54,7 +56,17 @@ export default function Wishlist({ showToast }) {
 
   return (
     <div className="container container-narrow my-4">
-      <h5 className="mb-3">My Wishlist</h5>
+      {/* Modified: Back button and My Wishlist title in same row */}
+      <div className="d-flex align-items-center mb-3">
+        <button
+          className="btn btn-link p-0 me-2"
+          onClick={() => navigate(-1)}
+          title="Go Back"
+        >
+          <i className="bi bi-arrow-left fs-4"></i>
+        </button>
+        <h5 className="mb-0">My Wishlist</h5>
+      </div>
       <div className="row g-3">
         {data.products.map((product) => (
           <div className="col-md-4" key={product._id}>
