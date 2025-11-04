@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useState, useEffect } from "react";
 import { get } from "../services/api";
@@ -8,6 +8,7 @@ export default function Profile() {
   const { user } = useAuth();
   const [addresses, setAddresses] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // Added for back navigation
 
   useEffect(() => {
     if (user) {
@@ -56,10 +57,19 @@ export default function Profile() {
       <div className="row justify-content-center">
         <div className="col-lg-8 col-md-10">
           <div className="card shadow-lg border-0">
-            <div className="card-header bg-primary text-white">
-              <h4 className="card-title mb-0 fw-bold">
+            <div className="card-header bg-primary text-white d-flex align-items-center justify-content-between">
+              <button
+                className="btn btn-link text-white p-0 me-2"
+                onClick={() => navigate(-1)}
+                style={{ fontSize: "1.2rem" }}
+                title="Go Back"
+              >
+                <i className="bi bi-arrow-left"></i>
+              </button>
+              <h4 className="card-title mb-0 fw-bold flex-grow-1 text-center">
                 <i className="bi bi-person-fill me-2"></i> Profile
               </h4>
+              <div style={{ width: "40px" }}></div> {/* Spacer for balance */}
             </div>
             <div className="card-body p-4">
               <div className="row g-3">

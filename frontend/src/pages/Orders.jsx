@@ -26,23 +26,45 @@ export default function Orders() {
       {orders.map((o) => (
         <div className="card p-3 mb-3 shadow-sm border-0 rounded-3" key={o._id}>
           {/* Order Header */}
-          <div className="d-flex flex-column mb-2">
-            <div className="fw-semibold">
-              Order ID: <span className="text-primary">#{o._id.slice(-8)}</span>
+          <div className="mb-2">
+            {/* Desktop: Order ID, Date, and Status in separate rows */}
+            <div className="d-none d-md-block">
+              <div className="d-flex flex-column mb-2">
+                <div className="fw-semibold">
+                  Order ID:{" "}
+                  <span className="text-primary">#{o._id.slice(-8)}</span>
+                </div>
+                <small className="text-muted">
+                  {new Date(o.createdAt).toLocaleString()}
+                </small>
+              </div>
+              <span
+                className={`${getStatusBadge(o.status)} mb-2`}
+                style={{ width: "fit-content" }}
+              >
+                {o.status}
+              </span>
             </div>
 
-            <small className="text-muted">
-              {new Date(o.createdAt).toLocaleString()}
-            </small>
+            {/* Mobile: Order ID and Status in same row (Status at right), Date below */}
+            <div className="d-md-none">
+              <div className="d-flex justify-content-between align-items-center mb-1">
+                <div className="fw-semibold">
+                  Order ID:{" "}
+                  <span className="text-primary">#{o._id.slice(-8)}</span>
+                </div>
+                <span
+                  className={`${getStatusBadge(o.status)}`}
+                  style={{ width: "fit-content" }}
+                >
+                  {o.status}
+                </span>
+              </div>
+              <small className="text-muted">
+                {new Date(o.createdAt).toLocaleString()}
+              </small>
+            </div>
           </div>
-
-          {/* Status */}
-          <span
-            className={`${getStatusBadge(o.status)} mb-2`}
-            style={{ width: "fit-content" }}
-          >
-            {o.status}
-          </span>
 
           {/* Order Items */}
           <div className="mt-2">
