@@ -127,7 +127,8 @@ export default function ProductCard({
             className="btn btn-outline-secondary w-100"
             onClick={addWish}
           >
-            <i className="bi bi-heart text-danger">Wishlist</i>
+            <i className="bi bi-heart-fill"></i>
+            Wishlist
           </button>
         </div>
       </div>
