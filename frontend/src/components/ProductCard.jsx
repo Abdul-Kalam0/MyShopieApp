@@ -112,8 +112,9 @@ export default function ProductCard({
           </div>
         </div>
 
-        {/* ✅ Buttons stacked (Add → Wishlist) */}
+        {/* ✅ Buttons */}
         <div className="mt-auto d-flex flex-column gap-2">
+          {/* Add to Cart */}
           <button
             disabled={busy}
             className="btn btn-primary w-100"
@@ -122,12 +123,23 @@ export default function ProductCard({
             {busy ? "Adding..." : "Add to Cart"}
           </button>
 
+          {/* ✅ Wishlist Button — matches your screenshot */}
           <button
             disabled={busy}
-            className="btn btn-outline-secondary w-100"
             onClick={addWish}
+            className="btn w-100"
+            style={{
+              border: "2px solid #d9534f",
+              color: "#d9534f",
+              borderRadius: "10px",
+              fontWeight: "600",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "6px",
+            }}
           >
-            <i className="bi bi-heart-fill"></i>
+            <i className="bi bi-heart-fill" style={{ color: "#d9534f" }}></i>
             Wishlist
           </button>
         </div>
