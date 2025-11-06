@@ -56,9 +56,28 @@ export const getAllProducts = async (req, res) => {
     // ✅ Search by name (q=)
     if (q) filter.name = { $regex: q, $options: "i" };
 
-    // ✅ Filter by categoryType (T-Shirts, Jeans, Hoodies, etc.)
+    // ✅ Filter by category (now based on category names like "Men", "Women")
     if (category) {
-      filter.categoryType = category;
+      // Ensure category is an array (handle both string and array inputs)
+      const categoryNames = Array.isArray(category) ? category : [category];
+
+      // Find category IDs where name matches the selected names
+      const matchingCategories = await Category.find({
+        name: { $in: categoryNames },
+      });
+      const categoryIds = matchingCategories.map((cat) => cat._id);
+
+      // Filter products where category._id is in the matching IDs
+      if (categoryIds.length > 0) {
+        filter.category = { $in: categoryIds };
+      } else {
+        // If no matching categories, return no products (or handle as needed)
+        return res.status(200).json({
+          success: true,
+          message: "No matching categories found",
+          data: { products: [] },
+        });
+      }
     }
 
     // ✅ Filter by price range (minPrice and maxPrice)
