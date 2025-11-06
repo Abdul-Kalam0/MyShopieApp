@@ -240,5 +240,16 @@ cd MyShopieApp
 
 ---
 
+## 🧑‍💻 Author
+
+**Abdul Kalam**
+💼 [GitHub](https://github.com/Abdul-Kalam0/MyShopieApp) • 🌐 [Live Project](https://my-shopie-app-001.vercel.app)
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — feel free to use and modify it.
+
 
 
