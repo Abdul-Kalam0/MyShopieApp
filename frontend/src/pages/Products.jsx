@@ -32,43 +32,36 @@ export default function Products({ showToast }) {
     if (qp.q) q.set("q", qp.q);
     if (qp.sort) q.set("sort", qp.sort);
 
-    // Handle category: Send as array if multiple, or single string
-    if (qp.category && Array.isArray(qp.category) && qp.category.length > 0) {
-      qp.category.forEach((cat) => q.append("category", cat)); // Append each for backend array handling
-    } else if (qp.category && typeof qp.category === "string") {
+    if (qp.category && Array.isArray(qp.category)) {
+      q.set("category", qp.category[0]);
+    } else if (qp.category) {
       q.set("category", qp.category);
     }
 
     if (qp.minRating) q.set("minRating", qp.minRating);
     if (qp.maxPrice) q.set("maxPrice", qp.maxPrice);
 
-    try {
-      const res = await get("/api/products?" + q.toString());
-      setData(res.data?.products || []);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-      setData([]); // Fallback to empty on error
-    } finally {
-      setLoading(false);
-    }
+    const res = await get("/api/products?" + q.toString());
+    setData(res.data?.products || []);
+    setLoading(false);
   };
 
   useEffect(() => {
-    // Build initial filters from URL
-    const initialFilters = {
+    setFilters((prev) => ({
+      ...prev,
       q: qs.get("q") || "",
-      category: qs.get("category") ? [qs.get("category")] : [], // Default to empty array if none
-    };
-    setFilters(initialFilters);
-
-    // Fetch products with initial params (or none for all products)
-    fetchProducts(initialFilters);
-  }, [qs]); // Only depend on qs to avoid infinite loops
+      category: qs.get("category") ? [qs.get("category")] : prev.category,
+    }));
+    fetchProducts({
+      q: qs.get("q") || "",
+      category: qs.get("category") || undefined,
+    });
+  }, [qs, qs.get("q"), qs.get("category")]);
 
   const onClear = () => {
     const base = { categoriesList: categories };
     setFilters(base);
-    fetchProducts({}); // Clear all filters
+    fetchProducts({});
   };
 
   useEffect(() => {
