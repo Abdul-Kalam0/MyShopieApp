@@ -19,7 +19,6 @@ export default function FiltersSidebar({ applied, onChange, onClear }) {
       {/* Header */}
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h5 className="fw-bold m-0">Filters</h5>
-
         <button
           className="btn btn-sm text-danger fw-semibold"
           onClick={onClear}
@@ -29,7 +28,7 @@ export default function FiltersSidebar({ applied, onChange, onClear }) {
         </button>
       </div>
 
-      {/* 🆕 Gender Filter */}
+      {/* 🧍‍♂️ Gender Filter */}
       <div className="mb-4">
         <h6 className="fw-semibold mb-2">Gender</h6>
 
@@ -64,7 +63,7 @@ export default function FiltersSidebar({ applied, onChange, onClear }) {
         </div>
       </div>
 
-      {/* Price Range */}
+      {/* 💰 Price Range */}
       <div className="mb-4">
         <h6 className="fw-semibold mb-2">Price</h6>
 
@@ -105,34 +104,7 @@ export default function FiltersSidebar({ applied, onChange, onClear }) {
         </div>
       </div>
 
-      {/* Category */}
-      <div className="mb-4">
-        <h6 className="fw-semibold mb-2">Category</h6>
-
-        {(local.categoriesList || []).map((c) => (
-          <div className="form-check mb-1" key={c}>
-            <input
-              className="form-check-input"
-              type="checkbox"
-              checked={(local.category || []).includes(c)}
-              id={`c-${c}`}
-              onChange={(e) => {
-                const set = new Set(local.category || []);
-                e.target.checked ? set.add(c) : set.delete(c);
-                update({ category: Array.from(set) });
-              }}
-            />
-            <label
-              className="form-check-label text-capitalize"
-              htmlFor={`c-${c}`}
-            >
-              {c}
-            </label>
-          </div>
-        ))}
-      </div>
-
-      {/* Rating */}
+      {/* ⭐ Rating Filter */}
       <div className="mb-4">
         <h6 className="fw-semibold mb-2">Minimum Rating</h6>
 
@@ -151,7 +123,7 @@ export default function FiltersSidebar({ applied, onChange, onClear }) {
         </div>
       </div>
 
-      {/* Sort */}
+      {/* ↕️ Sort by Price */}
       <div className="mb-2">
         <h6 className="fw-semibold mb-2">Sort by</h6>
 
