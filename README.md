@@ -76,3 +76,169 @@ MyShopieApp is a modern, responsive, full-stack e-commerce platform built with R
 
 ## 📁 Complete Project Structure
 
+```
+MyShopieApp/
+│
+├── client/                     # React Frontend
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   ├── ProductCard.jsx
+│   │   │   ├── FiltersSidebar.jsx
+│   │   ├── pages/
+│   │   │   ├── Home.jsx
+│   │   │   ├── Products.jsx
+│   │   │   ├── ProductDetail.jsx
+│   │   │   ├── Cart.jsx
+│   │   │   ├── Wishlist.jsx
+│   │   │   ├── Orders.jsx
+│   │   │   ├── Checkout.jsx
+│   │   ├── context/
+│   │   │   ├── AuthContext.jsx
+│   │   ├── services/
+│   │       ├── api.js
+│   │   ├── main.jsx
+│   │   ├── App.jsx
+│   ├── package.json
+│   ├── vite.config.js
+│
+├── server/                     # Node.js Backend
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── productController.js
+│   │   ├── categoryController.js
+│   │   ├── cartController.js
+│   │   ├── wishlistController.js
+│   │   ├── orderController.js
+│   │   ├── addressController.js
+│   ├── middlewares/
+│   │   ├── authMiddleware.js
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Product.js
+│   │   ├── Category.js
+│   │   ├── Cart.js
+│   │   ├── Wishlist.js
+│   │   ├── Order.js
+│   │   ├── Address.js
+│   ├── routes/
+│   │   ├── userRoutes.js
+│   │   ├── productRoutes.js
+│   │   ├── categoryRoutes.js
+│   │   ├── cartRoutes.js
+│   │   ├── wishlistRoutes.js
+│   │   ├── orderRoutes.js
+│   │   ├── addressRoutes.js
+│   ├── config/
+│   │   ├── db.js
+│   ├── .env.example
+│   ├── index.js
+│   ├── package.json
+│
+└── README.md
+
+```
+
+---
+
+## ⚙️ Setup Instructions
+
+### 🖥️ Backend Setup
+
+1. Navigate to the **server** folder:
+
+   ```bash
+   cd server
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Create a `.env` file in the `server` folder:
+
+   ```bash
+   JWT_SECRET=YOUR_JWT_SECRET
+   DB_URI=your_mongodb_connection_string
+   PORT=3000
+   ```
+
+4. Start the backend server:
+
+   ```bash
+   npm run dev
+   ```
+
+> The backend will start at `http://localhost:3000`
+
+---
+
+### 💻 Frontend Setup
+
+1. Navigate to the **client** folder:
+
+   ```bash
+   cd client
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Start the frontend:
+
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## 🧪 Run Locally
+
+### 1. Clone Repo
+```bash
+git clone https://github.com/Abdul-Kalam0/MyShopieApp
+cd MyShopieApp
+```
+
+---
+
+## 🔌 API Overview
+
+### Auth
+- POST `/api/users/login`
+- POST `/api/users/registration`
+- POST `/api/users/logout`
+
+### Products
+- GET `/api/products`
+- GET `/api/products/:productId`
+
+### Categories
+- GET `/api/categories`
+
+### Cart
+- GET `/api/cart`
+- POST `/api/cart`
+- PUT `/api/cart`
+- DELETE `/api/cart`
+
+### Wishlist
+- GET `/api/wishlist`
+- POST `/api/wishlist`
+- DELETE `/api/wishlist`
+
+### Orders
+- GET `/api/orders`
+- POST `/api/orders`
+
+---
+
+
+
