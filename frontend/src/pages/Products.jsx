@@ -17,48 +17,85 @@ export default function Products({ showToast }) {
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState({});
 
+  /**
+   * ✅ Fetch products with filters (category, gender, price, rating, sort)
+   */
   const fetchProducts = async (params = {}) => {
     setLoading(true);
+
     const q = new URLSearchParams();
     const qp = { ...Object.fromEntries(qs.entries()), ...params };
 
-    // ✅ Include all filters
+    // ✅ Search keyword
     if (qp.q) q.set("q", qp.q);
+
+    // ✅ Sort order
     if (qp.sort) q.set("sort", qp.sort);
-    if (qp.gender) q.set("gender", qp.gender); // ✅ critical fix
+
+    // ✅ Category from URL (like Shirts, Jeans, Jackets)
+    const categoryFromUrl = qs.get("category");
+    if (categoryFromUrl) q.set("category", categoryFromUrl);
+
+    // ✅ Gender filter
+    if (qp.gender) q.set("gender", qp.gender);
+
+    // ✅ Price filters
     if (qp.minPrice) q.set("minPrice", qp.minPrice);
     if (qp.maxPrice) q.set("maxPrice", qp.maxPrice);
+
+    // ✅ Rating filter
     if (qp.minRating) q.set("minRating", qp.minRating);
 
-    // Debug: see what is being sent
-    console.log("🔍 API Query:", q.toString());
+    // 🧠 Debug log
+    console.log("🔍 API Query →", q.toString());
 
+    // ✅ Fetch products
     const res = await get("/api/products?" + q.toString());
     setData(res.data?.products || []);
     setLoading(false);
   };
 
-  // Initial load when page opens
+  /**
+   * ✅ Initial fetch when component loads or URL query changes
+   */
   useEffect(() => {
+    const categoryFromUrl = qs.get("category");
+    const querySearch = qs.get("q");
+
+    setFilters((prev) => ({
+      ...prev,
+      q: querySearch || "",
+      category: categoryFromUrl || "",
+    }));
+
     fetchProducts({
-      q: qs.get("q") || "",
+      q: querySearch || "",
+      category: categoryFromUrl || undefined,
     });
   }, [qs]);
 
+  /**
+   * ✅ Clear all filters (but keep category from URL)
+   */
   const onClear = () => {
-    setFilters({});
-    fetchProducts({});
+    const categoryFromUrl = qs.get("category");
+    const base = { category: categoryFromUrl || undefined };
+    setFilters(base);
+    fetchProducts(base);
   };
 
+  /**
+   * ✅ When any filter changes (gender, price, rating, sort)
+   */
   const onChangeFilters = (f) => {
     setFilters(f);
-    fetchProducts(f); // ✅ will now send gender
+    fetchProducts(f);
   };
 
   return (
     <div className="container container-narrow my-3">
       <div className="row g-3">
-        {/* Sidebar */}
+        {/* Sidebar Filters */}
         <div className="col-md-3">
           <div className="card p-3">
             <FiltersSidebar
@@ -69,17 +106,21 @@ export default function Products({ showToast }) {
           </div>
         </div>
 
-        {/* Products List */}
+        {/* Products Section */}
         <div className="col-md-9">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <h6 className="mb-0">
-              Showing All Products{" "}
-              <span className="text-muted">({data.length} products)</span>
+              Showing Products{" "}
+              <span className="text-muted">({data.length} items)</span>
             </h6>
           </div>
 
           {loading ? (
             <Loader />
+          ) : data.length === 0 ? (
+            <div className="text-center py-5">
+              <h5 className="text-muted">No products found 🛍️</h5>
+            </div>
           ) : (
             <div className="row g-3">
               {data.map((p) => (
@@ -99,6 +140,7 @@ export default function Products({ showToast }) {
         </div>
       </div>
 
+      {/* Footer */}
       <Footer />
     </div>
   );
