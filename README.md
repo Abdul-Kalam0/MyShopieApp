@@ -69,3 +69,66 @@ MyShopieApp is a modern, responsive, full-stack e-commerce platform built with *
 
 ## 📁 Complete Project Structure
 
+MyShopieApp/
+│
+├── client/                     # React Frontend
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   ├── ProductCard.jsx
+│   │   │   ├── FiltersSidebar.jsx
+│   │   ├── pages/
+│   │   │   ├── Home.jsx
+│   │   │   ├── Products.jsx
+│   │   │   ├── ProductDetail.jsx
+│   │   │   ├── Cart.jsx
+│   │   │   ├── Wishlist.jsx
+│   │   │   ├── Orders.jsx
+│   │   │   ├── Checkout.jsx
+│   │   ├── context/
+│   │   │   ├── AuthContext.jsx
+│   │   ├── services/
+│   │       ├── api.js
+│   │   ├── main.jsx
+│   │   ├── App.jsx
+│   ├── package.json
+│   ├── vite.config.js
+│
+├── server/                     # Node.js Backend
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── productController.js
+│   │   ├── categoryController.js
+│   │   ├── cartController.js
+│   │   ├── wishlistController.js
+│   │   ├── orderController.js
+│   │   ├── addressController.js
+│   ├── middlewares/
+│   │   ├── authMiddleware.js
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Product.js
+│   │   ├── Category.js
+│   │   ├── Cart.js
+│   │   ├── Wishlist.js
+│   │   ├── Order.js
+│   │   ├── Address.js
+│   ├── routes/
+│   │   ├── userRoutes.js
+│   │   ├── productRoutes.js
+│   │   ├── categoryRoutes.js
+│   │   ├── cartRoutes.js
+│   │   ├── wishlistRoutes.js
+│   │   ├── orderRoutes.js
+│   │   ├── addressRoutes.js
+│   ├── config/
+│   │   ├── db.js
+│   ├── .env.example
+│   ├── index.js
+│   ├── package.json
+│
+└── README.md
+
+
