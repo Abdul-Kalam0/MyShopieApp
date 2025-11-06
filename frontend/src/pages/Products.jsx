@@ -32,9 +32,20 @@ export default function Products({ showToast }) {
     // ✅ Sort order
     if (qp.sort) q.set("sort", qp.sort);
 
-    // ✅ Category from URL (like Shirts, Jeans, Jackets)
+    // ✅ Category from URL (like Shirts, Jeans, Jackets) or sidebar
     const categoryFromUrl = qs.get("category");
     if (categoryFromUrl) q.set("category", categoryFromUrl);
+
+    // Handle additional category from sidebar (e.g., if multiple or different)
+    if (qp.category && Array.isArray(qp.category) && qp.category.length > 0) {
+      qp.category.forEach((cat) => q.append("category", cat)); // Append for arrays
+    } else if (
+      qp.category &&
+      typeof qp.category === "string" &&
+      !categoryFromUrl
+    ) {
+      q.set("category", qp.category);
+    }
 
     // ✅ Gender filter
     if (qp.gender) q.set("gender", qp.gender);
@@ -43,16 +54,23 @@ export default function Products({ showToast }) {
     if (qp.minPrice) q.set("minPrice", qp.minPrice);
     if (qp.maxPrice) q.set("maxPrice", qp.maxPrice);
 
-    // ✅ Rating filter
-    if (qp.minRating) q.set("minRating", qp.minRating);
+    // ✅ Rating filter - only send if > 0
+    if (qp.minRating && Number(qp.minRating) > 0)
+      q.set("minRating", qp.minRating);
 
     // 🧠 Debug log
     console.log("🔍 API Query →", q.toString());
 
-    // ✅ Fetch products
-    const res = await get("/api/products?" + q.toString());
-    setData(res.data?.products || []);
-    setLoading(false);
+    try {
+      // ✅ Fetch products
+      const res = await get("/api/products?" + q.toString());
+      setData(res.data?.products || []);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      setData([]); // Fallback on error
+    } finally {
+      setLoading(false);
+    }
   };
 
   /**
@@ -65,12 +83,12 @@ export default function Products({ showToast }) {
     setFilters((prev) => ({
       ...prev,
       q: querySearch || "",
-      category: categoryFromUrl || "",
+      category: categoryFromUrl || undefined, // ✅ FIX: Proper fallback
     }));
 
     fetchProducts({
       q: querySearch || "",
-      category: categoryFromUrl || undefined,
+      category: categoryFromUrl || undefined, // ✅ FIX: Proper fallback
     });
   }, [qs]);
 

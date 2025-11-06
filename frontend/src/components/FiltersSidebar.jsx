@@ -55,7 +55,7 @@ export default function FiltersSidebar({ applied, onChange, onClear }) {
             name="gender"
             id="g-all"
             checked={!local.gender}
-            onChange={() => update({ gender: undefined })}
+            onChange={() => update({ gender: undefined })} // ✅ FIX: Properly clear gender
           />
           <label className="form-check-label" htmlFor="g-all">
             All
