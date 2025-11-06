@@ -16,66 +16,49 @@ export default function Products({ showToast }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState({});
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    get("/api/categories").then((r) =>
-      setCategories(r.data?.categories?.map((c) => c.name) || [])
-    );
-  }, []);
 
   const fetchProducts = async (params = {}) => {
     setLoading(true);
     const q = new URLSearchParams();
     const qp = { ...Object.fromEntries(qs.entries()), ...params };
 
+    // ✅ Include all filters
     if (qp.q) q.set("q", qp.q);
     if (qp.sort) q.set("sort", qp.sort);
-
-    if (qp.category && Array.isArray(qp.category)) {
-      q.set("category", qp.category[0]);
-    } else if (qp.category) {
-      q.set("category", qp.category);
-    }
-
-    if (qp.minRating) q.set("minRating", qp.minRating);
+    if (qp.gender) q.set("gender", qp.gender); // ✅ critical fix
+    if (qp.minPrice) q.set("minPrice", qp.minPrice);
     if (qp.maxPrice) q.set("maxPrice", qp.maxPrice);
+    if (qp.minRating) q.set("minRating", qp.minRating);
+
+    // Debug: see what is being sent
+    console.log("🔍 API Query:", q.toString());
 
     const res = await get("/api/products?" + q.toString());
     setData(res.data?.products || []);
     setLoading(false);
   };
 
+  // Initial load when page opens
   useEffect(() => {
-    setFilters((prev) => ({
-      ...prev,
-      q: qs.get("q") || "",
-      category: qs.get("category") ? [qs.get("category")] : prev.category,
-    }));
     fetchProducts({
       q: qs.get("q") || "",
-      category: qs.get("category") || undefined,
     });
-  }, [qs, qs.get("q"), qs.get("category")]);
+  }, [qs]);
 
   const onClear = () => {
-    const base = { categoriesList: categories };
-    setFilters(base);
+    setFilters({});
     fetchProducts({});
   };
 
-  useEffect(() => {
-    setFilters((f) => ({ ...f, categoriesList: categories }));
-  }, [categories]);
-
   const onChangeFilters = (f) => {
     setFilters(f);
-    fetchProducts(f);
+    fetchProducts(f); // ✅ will now send gender
   };
 
   return (
     <div className="container container-narrow my-3">
       <div className="row g-3">
+        {/* Sidebar */}
         <div className="col-md-3">
           <div className="card p-3">
             <FiltersSidebar
@@ -86,6 +69,7 @@ export default function Products({ showToast }) {
           </div>
         </div>
 
+        {/* Products List */}
         <div className="col-md-9">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <h6 className="mb-0">
@@ -114,6 +98,7 @@ export default function Products({ showToast }) {
           )}
         </div>
       </div>
+
       <Footer />
     </div>
   );
