@@ -91,7 +91,7 @@ export default function ProductCard({
 
         <div className="text-warning mb-2">
           {"★".repeat(Math.round(p.rating || 0))}
-          <span className="text-muted small ms-1">({p.numReviews || 0})</span>
+          <span className="text-muted small ms-1">({p.rating || 0})</span>
         </div>
 
         {/* Sizes */}
