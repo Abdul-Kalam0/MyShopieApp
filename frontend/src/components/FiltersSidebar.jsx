@@ -29,6 +29,41 @@ export default function FiltersSidebar({ applied, onChange, onClear }) {
         </button>
       </div>
 
+      {/* 🆕 Gender Filter */}
+      <div className="mb-4">
+        <h6 className="fw-semibold mb-2">Gender</h6>
+
+        {["Men", "Women"].map((g) => (
+          <div className="form-check mb-1" key={g}>
+            <input
+              className="form-check-input"
+              type="radio"
+              name="gender"
+              id={`g-${g}`}
+              checked={local.gender === g}
+              onChange={() => update({ gender: g })}
+            />
+            <label className="form-check-label" htmlFor={`g-${g}`}>
+              {g}
+            </label>
+          </div>
+        ))}
+
+        <div className="form-check mt-1">
+          <input
+            className="form-check-input"
+            type="radio"
+            name="gender"
+            id="g-all"
+            checked={!local.gender}
+            onChange={() => update({ gender: undefined })}
+          />
+          <label className="form-check-label" htmlFor="g-all">
+            All
+          </label>
+        </div>
+      </div>
+
       {/* Price Range */}
       <div className="mb-4">
         <h6 className="fw-semibold mb-2">Price</h6>

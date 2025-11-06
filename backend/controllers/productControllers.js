@@ -1,14 +1,18 @@
 import Category from "../models/Category.js";
 import Product from "../models/Product.js";
 
+// ✅ CREATE PRODUCT
 export const createProduct = async (req, res) => {
   const {
     category: categoryName,
     description,
     categoryType,
+    gender,
     ...productData
   } = req.body;
+
   try {
+    // 🔹 Check or create category
     let category = await Category.findOne({ name: categoryName });
     if (!category) {
       category = await Category.create({
@@ -17,111 +21,189 @@ export const createProduct = async (req, res) => {
       });
     }
 
+    // 🔹 Prevent duplicates if same name and stock > 0
     const existingProduct = await Product.findOne({ name: productData.name });
-    if (existingProduct && existingProduct.stock > 0)
+    if (existingProduct && existingProduct.stock > 0) {
       return res.status(409).json({
         success: false,
-        message: "Product already exist",
+        message: "Product already exists",
         data: { existingProduct },
       });
+    }
 
+    // 🔹 Create product
     const product = new Product({
       ...productData,
       category: category._id,
       categoryType,
       description,
+      gender, // ✅ Added gender support
     });
+
     await product.save();
 
     const populatedProduct = await Product.findById(product._id).populate(
       "category"
     );
+
     res.status(201).json({
       success: true,
-      message: "Product Created",
+      message: "Product created successfully",
       data: populatedProduct,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "Server error", error: error.message });
+    console.error("Error creating product:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while creating product",
+      error: error.message,
+    });
   }
 };
 
+// ✅ GET ALL PRODUCTS (With Filters)
 export const getAllProducts = async (req, res) => {
   try {
-    const { q, category, sort, minPrice, maxPrice, minRating } = req.query;
+    const { q, category, sort, minPrice, maxPrice, minRating, gender } =
+      req.query;
+
     const filter = {};
 
-    // ✅ Search by name (q=)
+    // 🔍 Search by name (case-insensitive)
     if (q) filter.name = { $regex: q, $options: "i" };
 
-    // ✅ Filter by categoryType (T-Shirts, Jeans, Hoodies, etc.)
-    if (category) {
-      filter.categoryType = category;
+    // 🎯 Category filter
+    if (category) filter.categoryType = category;
+
+    // 🚻 Gender filter
+    if (gender && gender !== "All") {
+      filter.gender = gender;
     }
 
-    // ✅ Filter by price range (minPrice and maxPrice)
+    // 💰 Price filter
     if (minPrice || maxPrice) {
       filter.price = {};
       if (minPrice) filter.price.$gte = Number(minPrice);
       if (maxPrice) filter.price.$lte = Number(maxPrice);
-      // Exclude null prices to avoid issues
       filter.price.$ne = null;
     }
 
-    // ✅ Filter by min rating
-    if (minRating) {
-      filter.rating = { $gte: Number(minRating) };
-    }
+    // ⭐ Minimum rating
+    if (minRating) filter.rating = { $gte: Number(minRating) };
 
-    // 🐛 DEBUG: Log the filter and query params
-    console.log("Query Params:", {
-      q,
-      category,
-      sort,
-      minPrice,
-      maxPrice,
-      minRating,
-    });
-    console.log("Applied Filter:", filter);
+    // 🧠 Debug logs (optional)
+    console.log("Query Params:", req.query);
+    console.log("Applied Filters:", filter);
 
+    // 🔹 Build query
     let query = Product.find(filter).populate("category");
 
-    // ✅ Price sorting
+    // 🧾 Sorting (by price)
     if (sort === "asc") query = query.sort({ price: 1 });
     if (sort === "desc") query = query.sort({ price: -1 });
 
+    // 🔹 Execute
     const products = await query.exec();
-
-    // 🐛 DEBUG: Log the number of products returned
-    console.log(`Found ${products.length} products`);
 
     res.status(200).json({
       success: true,
-      message: "Products data fetched successfully",
+      message: "Products fetched successfully",
       data: { products },
     });
   } catch (error) {
     console.error("Error in getAllProducts:", error);
-    res.status(500).json({ success: false, message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching products",
+      error: error.message,
+    });
   }
 };
 
+// ✅ GET PRODUCT BY ID
 export const getProductByProductId = async (req, res) => {
   try {
     const { productId } = req.params;
+
     const product = await Product.findById(productId).populate("category");
-    if (!product)
-      return res
-        .status(404)
-        .json({ success: false, message: "Data does not exist" });
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
     res.status(200).json({
       success: true,
-      message: "Product fetch successfully",
+      message: "Product fetched successfully",
       data: { product },
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server error" });
+    console.error("Error fetching product by ID:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching product",
+      error: error.message,
+    });
+  }
+};
+
+// ✅ UPDATE PRODUCT
+export const updateProduct = async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const updates = req.body;
+
+    const product = await Product.findByIdAndUpdate(productId, updates, {
+      new: true,
+    }).populate("category");
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found for update",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Product updated successfully",
+      data: { product },
+    });
+  } catch (error) {
+    console.error("Error updating product:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while updating product",
+      error: error.message,
+    });
+  }
+};
+
+// ✅ DELETE PRODUCT
+export const deleteProduct = async (req, res) => {
+  try {
+    const { productId } = req.params;
+
+    const deleted = await Product.findByIdAndDelete(productId);
+
+    if (!deleted) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found for deletion",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Product deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while deleting product",
+      error: error.message,
+    });
   }
 };

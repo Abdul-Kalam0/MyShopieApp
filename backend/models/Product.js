@@ -15,7 +15,16 @@ const productSchema = new mongoose.Schema(
       ref: "Category",
       required: true,
     },
-    categoryType: { type: String },
+    categoryType: { type: String }, // e.g., "T-Shirts", "Jeans"
+
+    // 🆕 Gender field
+    gender: {
+      type: String,
+      enum: ["Men", "Women", "Unisex"],
+      default: "Unisex",
+      required: true,
+    },
+
     brand: { type: String, default: "Unknown" },
     stock: { type: Number, default: 10 },
     imageUrl: { type: String, required: true },

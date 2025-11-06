@@ -6,20 +6,25 @@ export const productValidationSchema = Joi.object({
   price: Joi.number().required(),
   originalPrice: Joi.number().required(),
 
-  // This is auto-calculated by mongoose — do NOT accept from user
-  // discountPercent: Joi.number(),  ❌ NO — not from user
+  // auto-calculated by Mongoose
+  // discountPercent: Joi.number(), ❌ remove
 
-  rating: Joi.number().min(0).max(5).optional(), // Optional, default from db
-  numReviews: Joi.number().optional(), // Optional, default from db
+  rating: Joi.number().min(0).max(5).optional(),
+  numReviews: Joi.number().optional(),
 
   sizes: Joi.array().items(Joi.string()).default([]),
 
-  // Accept category as string for input, will be converted to ObjectId in backend
+  // category name as string
   category: Joi.string().required(),
   categoryType: Joi.string().allow("", null),
 
-  brand: Joi.string().default("Unknown"),
+  // 🆕 Gender validation
+  gender: Joi.string()
+    .valid("Men", "Women", "Unisex")
+    .default("Unisex")
+    .required(),
 
+  brand: Joi.string().default("Unknown"),
   stock: Joi.number().default(10),
 
   imageUrl: Joi.string().uri().required(),
