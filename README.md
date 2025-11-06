@@ -90,9 +90,9 @@ MyShopieApp/
 │   │   ├── context/
 │   │   │   ├── AuthContext.jsx
 │   │   ├── services/
-│   │       ├── api.js
-│   │   ├── main.jsx
+│   │   │   ├── api.js
 │   │   ├── App.jsx
+│   │   ├── main.jsx
 │   ├── package.json
 │   ├── vite.config.js
 │
