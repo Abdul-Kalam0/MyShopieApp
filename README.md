@@ -1,255 +1,200 @@
-# MyShopieApp – Full-Stack E-Commerce Web Application
+# 🛍️ MyShopieApp — Full-Stack E-Commerce Web Application
 
-MyShopieApp is a modern, responsive, full-stack e-commerce platform built with React (Vite), Bootstrap, Node.js, Express, and MongoDB. It includes authentication, product browsing, cart, wishlist, checkout, order management, and a fully mobile-friendly UI.
-
-## 🔗 Live Project Links
-
-- **Live Website:** [https://my-shopie-app-001.vercel.app/](https://my-shopie-app-001.vercel.app/)
-- **Backend API:** [https://my-shopie-app.vercel.app/](https://my-shopie-app.vercel.app/)
-- **GitHub Repository:** [https://github.com/Abdul-Kalam0/MyShopieApp](https://github.com/Abdul-Kalam0/MyShopieApp)
-
-## 🔐 Demo Login Credentials
-
-- Mobile Number: `1234567890`
-- Password: `123@Demo`
+MyShopieApp is a modern and responsive **E-Commerce platform** built using **React (Vite)**, **Node.js**, **Express**, and **MongoDB**.  
+It provides users with a smooth online shopping experience including authentication, cart, wishlist, checkout, address management, and order tracking.
 
 ---
 
-## ✅ Features Overview
+## 🌍 Live Deployment
+
+| Service        | Link                                 |
+| -------------- | ------------------------------------ |
+| 🖥️ Frontend    | https://my-shopie-app-001.vercel.app |
+| ⚙️ Backend API | https://my-shopie-app.vercel.app     |
+
+---
+
+## 🔐 Demo Login (For Testing)
+
+```
+📱 Mobile Number: 1234567890
+🔑 Password: 123@Demo
+```
+
+---
+
+## ✨ Features
 
 ### 👤 Authentication
 
 - Register / Login / Logout
-- JWT-based authentication
-- Protected routes (Cart, Wishlist, Checkout, Orders)
+- JWT-secured session validation
+- Restricted access (Wishlist, Checkout, Orders)
 
-### 🛒 Shopping Experience
+### 🛒 Shopping System
 
-- Browse products by category (T-Shirts, Hoodies, Jeans, Jackets, Shirts, etc.)
-- Product details with size selection
-- Add to Cart
-- Add to Wishlist
+- Browse products by category & filters
+- View product details with selectable sizes
+- Add / Remove items from Cart
+- Add / Remove items from Wishlist
 - Move items between Cart ↔ Wishlist
-- Quantity update inside Cart
+- Quantity increment/decrement in Cart
 
-### 🔍 Product Filters & Sorting
+### 🔍 Smart Search & Filters
 
-- Search products by keyword
-- Filter by categories
-- Filter by price
-- Filter by rating
-- Sort by price (Low → High, High → Low)
+- Search by title/keyword
+- Filter by:
+  - Category
+  - Price
+  - Rating
+- Sorting (Low → High / High → Low)
 
-### 📦 Order Management
+### 📦 Order & Delivery System
 
-- Add, update, delete addresses
-- Place order with selected address
-- Order summary page
-- Order history with item details
+- Manage multiple delivery addresses
+- Checkout with saved address
+- Order history and order detail pages
 
 ### ❤️ Wishlist
 
-- Add to wishlist
-- Remove from wishlist
-- Move wishlist item to cart
+- Persisted wishlist storage
+- One-click move to cart
 
 ---
 
-## 🖥️ Frontend Tech
+## 🧰 Tech Stack
 
-- React (Vite)
-- Bootstrap
-- React Router
-- Axios
-- Context API
+### Frontend
 
-## 🛠️ Backend Tech
+| Tool         | Purpose          |
+| ------------ | ---------------- |
+| React (Vite) | UI Framework     |
+| Bootstrap    | Layout + Styling |
+| React Router | Navigation       |
+| Axios        | API Calls        |
+| Context API  | Global State     |
 
-- Node.js
-- Express.js
-- MongoDB + Mongoose
-- JWT Authentication
-- bcrypt
-- CORS
+### Backend
+
+| Tool               | Purpose                 |
+| ------------------ | ----------------------- |
+| Node.js + Express  | API Framework           |
+| MongoDB + Mongoose | Database                |
+| JWT                | Authentication          |
+| bcrypt             | Secure Password Hashing |
+| CORS               | Frontend Communication  |
 
 ---
 
-## 📁 Complete Project Structure
+## 📁 Project Structure
 
 ```
 MyShopieApp/
 │
-├── client/                     # React Frontend
-│   ├── public/
+├── client/                     # Frontend
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── Navbar.jsx
-│   │   │   ├── Footer.jsx
-│   │   │   ├── ProductCard.jsx
-│   │   │   ├── FiltersSidebar.jsx
 │   │   ├── pages/
-│   │   │   ├── Home.jsx
-│   │   │   ├── Products.jsx
-│   │   │   ├── ProductDetail.jsx
-│   │   │   ├── Cart.jsx
-│   │   │   ├── Wishlist.jsx
-│   │   │   ├── Orders.jsx
-│   │   │   ├── Checkout.jsx
 │   │   ├── context/
-│   │   │   ├── AuthContext.jsx
 │   │   ├── services/
-│   │       ├── api.js
-│   │   ├── main.jsx
 │   │   ├── App.jsx
-│   ├── package.json
-│   ├── vite.config.js
+│   │   ├── main.jsx
 │
-├── server/                     # Node.js Backend
+├── server/                     # Backend
 │   ├── controllers/
-│   │   ├── authController.js
-│   │   ├── productController.js
-│   │   ├── categoryController.js
-│   │   ├── cartController.js
-│   │   ├── wishlistController.js
-│   │   ├── orderController.js
-│   │   ├── addressController.js
 │   ├── middlewares/
-│   │   ├── authMiddleware.js
 │   ├── models/
-│   │   ├── User.js
-│   │   ├── Product.js
-│   │   ├── Category.js
-│   │   ├── Cart.js
-│   │   ├── Wishlist.js
-│   │   ├── Order.js
-│   │   ├── Address.js
 │   ├── routes/
-│   │   ├── userRoutes.js
-│   │   ├── productRoutes.js
-│   │   ├── categoryRoutes.js
-│   │   ├── cartRoutes.js
-│   │   ├── wishlistRoutes.js
-│   │   ├── orderRoutes.js
-│   │   ├── addressRoutes.js
 │   ├── config/
-│   │   ├── db.js
-│   ├── .env.example
 │   ├── index.js
-│   ├── package.json
 │
 └── README.md
-
 ```
 
 ---
 
-## ⚙️ Setup Instructions
+## ⚙️ Installation
 
-### 🖥️ Backend Setup
+### Backend Setup
 
-1. Navigate to the **server** folder:
+```sh
+cd server
+npm install
+```
 
-   ```bash
-   cd server
-   ```
+Create `.env` file in `/server`:
 
-2. Install dependencies:
+```
+JWT_SECRET=YOUR_SECRET_KEY
+DB_URI=YOUR_MONGODB_CONNECTION
+PORT=3000
+```
 
-   ```bash
-   npm install
-   ```
+Start backend:
 
-3. Create a `.env` file in the `server` folder:
-
-   ```bash
-   JWT_SECRET=YOUR_JWT_SECRET
-   DB_URI=your_mongodb_connection_string
-   PORT=3000
-   ```
-
-4. Start the backend server:
-
-   ```bash
-   npm run dev
-   ```
-
-> The backend will start at `http://localhost:3000`
-
----
-
-### 💻 Frontend Setup
-
-1. Navigate to the **client** folder:
-
-   ```bash
-   cd client
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Start the frontend:
-
-   ```bash
-   npm run dev
-   ```
-
----
-
-## 🧪 Run Locally
-
-### 1. Clone Repo
-```bash
-git clone https://github.com/Abdul-Kalam0/MyShopieApp
-cd MyShopieApp
+```sh
+npm run dev
 ```
 
 ---
 
-## 🔌 API Overview
+### Frontend Setup
 
-### Auth
-- POST `/api/users/login`
-- POST `/api/users/registration`
-- POST `/api/users/logout`
+```sh
+cd client
+npm install
+npm run dev
+```
 
-### Products
-- GET `/api/products`
-- GET `/api/products/:productId`
+---
 
-### Categories
-- GET `/api/categories`
+## 📡 API Endpoints Summary
 
-### Cart
-- GET `/api/cart`
-- POST `/api/cart`
-- PUT `/api/cart`
-- DELETE `/api/cart`
+| Feature          | Method                    | Endpoint                                 |
+| ---------------- | ------------------------- | ---------------------------------------- |
+| Login / Register | POST                      | `/api/users/login` `/api/users/register` |
+| Products         | GET                       | `/api/products`                          |
+| Single Product   | GET                       | `/api/products/:productId`               |
+| Cart             | GET / POST / PUT / DELETE | `/api/cart`                              |
+| Wishlist         | GET / POST / DELETE       | `/api/wishlist`                          |
+| Orders           | GET / POST                | `/api/orders`                            |
+| Addresses        | GET / POST / PUT / DELETE | `/api/address`                           |
 
-### Wishlist
-- GET `/api/wishlist`
-- POST `/api/wishlist`
-- DELETE `/api/wishlist`
+---
 
-### Orders
-- GET `/api/orders`
-- POST `/api/orders`
+## 🚀 Roadmap
+
+- ☐ Admin Dashboard (Manage Products & Orders)
+- ☐ Reviews & Ratings System
+- ☐ Online Payment Integration (Stripe/Razorpay)
+- ☐ Dark Mode
+- ☐ Push Notifications
+
+---
+
+## 🤝 Contribution Guide
+
+```sh
+git checkout -b feature-name
+git commit -m "feat: added new feature"
+git push origin feature-name
+```
 
 ---
 
 ## 🧑‍💻 Author
 
-**Abdul Kalam**
-💼 [GitHub](https://github.com/Abdul-Kalam0/MyShopieApp) • 🌐 [Live Project](https://my-shopie-app-001.vercel.app)
+**Abdul Kalam**  
+🔗 GitHub Profile: https://github.com/Abdul-Kalam0
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License** — feel free to use and modify it.
+This project is released under the **MIT License**.
 
+---
 
+### ⭐ If you like this project, consider giving a **GitHub Star**!
 
+Made with ❤️ by Abdul Kalam
