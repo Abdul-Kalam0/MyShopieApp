@@ -10,7 +10,7 @@ It provides users with a smooth online shopping experience including authenticat
 | Service        | Link                                 |
 | -------------- | ------------------------------------ |
 | 🖥️ Frontend    | https://my-shopie-app-001.vercel.app |
-| ⚙️ Backend API | https://my-shopie-app.vercel.app     |
+| ⚙️ Backend | https://my-shopie-app.vercel.app     |
 
 ---
 
