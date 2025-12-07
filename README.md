@@ -25,25 +25,25 @@ It provides users with a smooth online shopping experience including authenticat
 
 ## 📸 UI Preview
 
-| Home                         | Profile                            |
-| ---------------------------- | ---------------------------------- |
-| ![Home](src/assets/Home.jpg) | ![Profile](src/assets/profile.jpg) |
+| Home                                  | Profile                                     |
+| ------------------------------------- | ------------------------------------------- |
+| ![Home](frontend/src/assets/Home.jpg) | ![Profile](frontend/src/assets/profile.jpg) |
 
-| Login                          | Registration                                 |
-| ------------------------------ | -------------------------------------------- |
-| ![Login](src/assets/login.jpg) | ![Registration](src/assets/registration.jpg) |
+| Login                                   | Registration                                          |
+| --------------------------------------- | ----------------------------------------------------- |
+| ![Login](frontend/src/assets/login.jpg) | ![Registration](frontend/src/assets/registration.jpg) |
 
-| Product                             |
-| ----------------------------------- |
-| ![Product](src/assets/products.jpg) |
+| Product                                      |
+| -------------------------------------------- |
+| ![Product](frontend/src/assets/products.jpg) |
 
-| Wishlist                             | Cart                         |
-| ------------------------------------ | ---------------------------- |
-| ![Wishlist](src/assets/wishlist.jpg) | ![Cart](src/assets/cart.jpg) |
+| Wishlist                                      | Cart                                  |
+| --------------------------------------------- | ------------------------------------- |
+| ![Wishlist](frontend/src/assets/wishlist.jpg) | ![Cart](frontend/src/assets/cart.jpg) |
 
-| Checkout                             | Orders                           |
-| ------------------------------------ | -------------------------------- |
-| ![Checkout](src/assets/checkout.jpg) | ![Orders](src/assets/orders.jpg) |
+| Checkout                                      | Orders                                    |
+| --------------------------------------------- | ----------------------------------------- |
+| ![Checkout](frontend/src/assets/checkout.jpg) | ![Orders](frontend/src/assets/orders.jpg) |
 
 ---
 
