@@ -23,6 +23,30 @@ It provides users with a smooth online shopping experience including authenticat
 
 ---
 
+## 📸 UI Preview
+
+| Home                         | Profile                            |
+| ---------------------------- | ---------------------------------- |
+| ![Home](src/assets/Home.jpg) | ![Profile](src/assets/profile.jpg) |
+
+| Login                          | Registration                                 |
+| ------------------------------ | -------------------------------------------- |
+| ![Login](src/assets/login.jpg) | ![Registration](src/assets/registration.jpg) |
+
+| Product                             |
+| ----------------------------------- |
+| ![Product](src/assets/products.jpg) |
+
+| Wishlist                             | Cart                         |
+| ------------------------------------ | ---------------------------- |
+| ![Wishlist](src/assets/wishlist.jpg) | ![Cart](src/assets/cart.jpg) |
+
+| Checkout                             | Orders                           |
+| ------------------------------------ | -------------------------------- |
+| ![Checkout](src/assets/checkout.jpg) | ![Orders](src/assets/orders.jpg) |
+
+---
+
 ## ✨ Features
 
 ### 👤 Authentication
